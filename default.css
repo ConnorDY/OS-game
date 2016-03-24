@@ -35,6 +35,29 @@ body
 	height: 28px;
 
 	background-color: #004D40;
+	background-image: url("./res/bar.png");
+}
+
+#footer>.separator
+{
+	float: left;
+	margin-left: 2px;
+
+	width: 11px;
+	height: 28px;
+
+	background-image: url("./res/separator.png");
+}
+
+#btn_start
+{
+	float: left;
+	margin-left: 2px;
+
+	width: 52px;
+	height: 28px;
+
+	background-image: url("./res/start.png");
 }
 
 .window, .bar

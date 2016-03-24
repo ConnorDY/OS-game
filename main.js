@@ -1,7 +1,10 @@
 var id = 0;
+var startPressed = false;
 
 function init()
 {
+	$("#btn_start").click(pressStart);
+
 	createWindow();
 }
 
@@ -10,7 +13,7 @@ function createWindow()
 	// Create window
 	$("#desktop").append('<div class="window" id="window' + id + '"></div>');
 
-	win = $("#window" + id);
+	var win = $("#window" + id);
 
 	// Add title bar, make it draggable, then disable dragging
 	win.append('<div class="bar">Window</div>');
@@ -32,4 +35,19 @@ function createWindow()
 
 	// Increase ID value
 	id++;
+}
+
+function pressStart()
+{
+	startPressed = !startPressed;
+	var btn = $("#btn_start");
+
+	if (startPressed)
+	{
+		btn.css("background-image", "url(\"./res/start_pressed.png\")");
+	}
+	else
+	{
+		btn.css("background-image", "url(\"./res/start.png\")");
+	}
 }
