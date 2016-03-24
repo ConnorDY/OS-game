@@ -1,11 +1,37 @@
 var id = 0;
+
+var hours = 3;
+var minutes = 21;
+var am = true;
+
 var startPressed = false;
 
 function init()
 {
+	$("body").click(handleGenericClick);
 	$("#btn_start").click(pressStart);
 
+	setInterval(updateTime, 60000);
+
 	createWindow();
+}
+
+function updateTime()
+{
+	minutes++;
+
+	if (minutes >= 60)
+	{
+		minutes = 0;
+		hours++;
+
+		if (hours == 12) am = !am;
+	}
+
+	if (hours > 12) hours = 1;
+
+	var timeStr = hours + ":" + (minutes > 9 ? "" : "0") + minutes + " " + (am ? "AM" : "PM");
+	$("#time").html(timeStr);
 }
 
 function createWindow()
@@ -37,17 +63,29 @@ function createWindow()
 	id++;
 }
 
+function handleGenericClick(e)
+{
+	var target = $(e.target);
+
+	if (!target.is("#btn_start")) closeStart();
+}
+
 function pressStart()
 {
 	startPressed = !startPressed;
-	var btn = $("#btn_start");
 
-	if (startPressed)
-	{
-		btn.css("background-image", "url(\"./res/start_pressed.png\")");
-	}
-	else
-	{
-		btn.css("background-image", "url(\"./res/start.png\")");
-	}
+	if (startPressed) openStart();
+	else closeStart();
+}
+
+function openStart()
+{
+	$("#btn_start").css("background-image", "url(\"./res/start_pressed.png\")");
+	startPressed = true;
+}
+
+function closeStart()
+{
+	$("#btn_start").css("background-image", "url(\"./res/start.png\")");
+	startPressed = false;
 }

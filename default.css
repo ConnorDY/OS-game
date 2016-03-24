@@ -1,3 +1,9 @@
+@font-face
+{
+	font-family: MSSansSerif;
+	src: url('micross.ttf?');
+}
+
 body
 {
 	margin: 0px;
@@ -34,6 +40,9 @@ body
 	width: 100%;
 	height: 28px;
 
+	font-family: MSSansSerif;
+	font-size: 14px;
+
 	background-color: #004D40;
 	background-image: url("./res/bar.png");
 }
@@ -58,6 +67,26 @@ body
 	height: 28px;
 
 	background-image: url("./res/start.png");
+}
+
+#info_panel
+{
+	float: right;
+
+	width: 135px;
+	height: 28px;
+
+	background-image: url("./res/info_panel.png");
+}
+
+#info_panel>#time
+{
+	text-align: right;
+	height: 100%;
+
+	overflow: hidden;
+
+	padding: 7px 12px 3px 3px;
 }
 
 .window, .bar
