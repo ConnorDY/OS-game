@@ -13,6 +13,9 @@ function init()
 	$("body").click(handleGenericClick);
 	$("#btn_start").click(pressStart);
 
+	$(".menu_option").mouseover(function(e) { $(e.target).css("background-color", "000080"); });
+	$(".menu_option").mouseout(function(e) { $(e.target).css("background-color", "C0C0C0"); });
+
 	setInterval(updateTime, 60000);
 
 	createWindow();
