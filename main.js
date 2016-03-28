@@ -5,6 +5,7 @@ var minutes = 21;
 var am = true;
 
 var menuOptions = 4;
+var menuDividers = 1;
 
 var startPressed = false;
 
@@ -13,8 +14,8 @@ function init()
 	$("body").click(handleGenericClick);
 	$("#btn_start").click(pressStart);
 
-	$(".menu_option").mouseover(function(e) { $(e.target).css("background-color", "000080"); });
-	$(".menu_option").mouseout(function(e) { $(e.target).css("background-color", "C0C0C0"); });
+	$(".menu_option").mouseover(highlightOption);
+	$(".menu_option").mouseout(dehighlightOption);
 
 	setInterval(updateTime, 60000);
 
@@ -90,7 +91,7 @@ function openStart()
 
 	btn.css("background-image", "url(\"./res/start_pressed.png\")");
 
-	menu.css("height", ((menuOptions * 38) + 2 + 6));
+	menu.css("height", ((menuOptions * 38) + (menuDividers * 2) + 6));
 
 	menu.css({
 		"display":	"block",
@@ -106,4 +107,20 @@ function closeStart()
 	$("#menu_start").css("display", "none");
 
 	startPressed = false;
+}
+
+function highlightOption()
+{
+	$(this).css({
+		"background-color":		"#000080",
+		"color":				"#FFFFFF"
+	});
+}
+
+function dehighlightOption()
+{
+	$(this).css({
+		"background-color":		"#C0C0C0",
+		"color":				"#000000"
+	});
 }
