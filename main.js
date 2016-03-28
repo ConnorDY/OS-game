@@ -4,6 +4,8 @@ var hours = 3;
 var minutes = 21;
 var am = true;
 
+var menuOptions = 4;
+
 var startPressed = false;
 
 function init()
@@ -80,12 +82,25 @@ function pressStart()
 
 function openStart()
 {
-	$("#btn_start").css("background-image", "url(\"./res/start_pressed.png\")");
+	var btn = $("#btn_start");
+	var menu = $("#menu_start");
+
+	btn.css("background-image", "url(\"./res/start_pressed.png\")");
+
+	menu.css("height", ((menuOptions * 38) + 2 + 6));
+
+	menu.css({
+		"display":	"block",
+		"top":		(btn.offset().top - menu.height() + 4)
+	});
+
 	startPressed = true;
 }
 
 function closeStart()
 {
 	$("#btn_start").css("background-image", "url(\"./res/start.png\")");
+	$("#menu_start").css("display", "none");
+
 	startPressed = false;
 }
