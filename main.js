@@ -66,6 +66,13 @@ function createWindow(title, width, height)
 	var bar = win.children(".mid").children(".mid").children(".bar");
 	bar.append('<div class="title">' + title + '</div>');
 
+	// Add close button
+	bar.append('<div class="btn_close"></div>');
+	bar.children(".btn_close").click(function ()
+	{
+		$(this).parent().parent().parent().parent().remove();
+	});
+
 	// Make the window draggable by the title bar
 	bar.mousedown(function()
 	{

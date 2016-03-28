@@ -248,8 +248,10 @@ body
 
 .window>.mid>.mid>.bar
 {
+	position: relative;
+
 	width: 100%;
-	height: 23px;
+	height: 20px;
 
 	background-color: #010081;
 	color: #FFFFFF;
@@ -258,8 +260,20 @@ body
 .mid>.bar>.title
 {
 	position: relative;
-	top: 2px;
+	top: 0px;
 	left: 4px;
+}
+
+.mid>.bar>.btn_close
+{
+	position: absolute;
+	right: 3px;
+	top: 3px;
+
+	width: 15px;
+	height: 13px;
+
+	background-image: url("./res/window_btn_close.png");
 }
 
 .window>.mid>.right
