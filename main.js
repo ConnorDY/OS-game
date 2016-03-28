@@ -19,7 +19,7 @@ function init()
 
 	setInterval(updateTime, 60000);
 
-	createWindow();
+	createWindow("Test Window", 400, 300);
 }
 
 function updateTime()
@@ -40,29 +40,41 @@ function updateTime()
 	$("#time").html(timeStr);
 }
 
-function createWindow()
+function createWindow(title, width, height)
 {
 	// Create window
 	$("#desktop").append('<div class="window" id="window' + id + '"></div>');
 
 	var win = $("#window" + id);
 
-	// Add title bar, make it draggable, then disable dragging
-	win.append('<div class="bar">Window</div>');
+	// Set size
+	win.css({
+		"width":	width,
+		"height":	height 
+	});
+
+	// Create inner divs
+	win.append('<div class="top"><div class="corner_topleft"></div><div class="side_top"></div><div class="corner_topright"></div></div>');
+	win.append('<div class="mid"><div class="side_left"></div><div class="mid"><div class="bar"></div></div><div class="side_right"></div></div>');
+	win.append('<div class="bot"><div class="corner_botleft"></div><div class="side_bot"></div><div class="corner_botright"></div></div>');
+
+	// Make the window draggable, but disable dragging initially
 	win.draggable();
 	win.draggable("disable")
 
-	// Make the window draggable by the title bar
-	bar = win.children(".bar");
+	// Set title
+	var bar = win.children(".mid").children(".mid").children(".bar");
+	bar.append('<div class="title">' + title + '</div>');
 
+	// Make the window draggable by the title bar
 	bar.mousedown(function()
 	{
-		$(this).parent().draggable("enable");
+		$(this).parent().parent().parent().draggable("enable");
 	});
 
 	bar.mouseup(function()
 	{
-		$(this).parent().draggable("disable");
+		$(this).parent().parent().parent().draggable("disable");
 	});
 
 	// Increase ID value
