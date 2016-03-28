@@ -8,9 +8,38 @@ var menuOptions = 4;
 var menuDividers = 1;
 
 var startPressed = false;
+var dragging = false;
 
 function init()
 {
+	// Disable normal right click
+	$(document).on("contextmenu", function(e)
+	{
+		if (e.target.nodeName != "INPUT" && e.target.nodeName != "TEXTAREA")
+			e.preventDefault();
+	});
+
+	// Misc.
+	$(document).mouseup(function()
+	{
+		$(".window").draggable("disable");
+		dragging = false;
+	});
+
+	$(document).resize(function()
+	{
+		var d = $("#desktop");
+		d.css({
+			"top":	"0px",
+			"left":	"0px" 
+		});
+
+		$("#footer").css({
+			"top":	d.height(),
+			"left":	"0px"
+		});
+	});
+
 	$("body").click(handleGenericClick);
 	$("#btn_start").click(pressStart);
 
@@ -18,8 +47,15 @@ function init()
 	$(".menu_option").mouseout(dehighlightOption);
 
 	setInterval(updateTime, 60000);
+	setInterval(cycleStep, 200);
 
 	createWindow("Test Window", 400, 300);
+}
+
+function cycleStep()
+{
+	// Fix position of taskbar and desktop
+	$("body").scrollTop(0);
 }
 
 function updateTime()
@@ -59,8 +95,10 @@ function createWindow(title, width, height)
 	win.append('<div class="bot"><div class="corner_botleft"></div><div class="side_bot"></div><div class="corner_botright"></div></div>');
 
 	// Make the window draggable, but disable dragging initially
-	win.draggable();
-	win.draggable("disable")
+	win.draggable({
+		"containment": $("#desktop")
+	});
+	win.draggable("disable");
 
 	// Set title
 	var bar = win.children(".mid").children(".mid").children(".bar");
@@ -77,11 +115,7 @@ function createWindow(title, width, height)
 	bar.mousedown(function()
 	{
 		$(this).parent().parent().parent().draggable("enable");
-	});
-
-	bar.mouseup(function()
-	{
-		$(this).parent().parent().parent().draggable("disable");
+		dragging = true;
 	});
 
 	// Increase ID value
