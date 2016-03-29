@@ -103,6 +103,13 @@ function createWindow(title, width, height, x, y)
 	});
 	win.draggable("disable");
 
+	// Make window clickable to activate
+	win.click(function()
+	{
+		var id_ = $(this).attr("id").substring(6);
+		activateWindow(id_);
+	});
+
 	// Set title
 	var bar = win.children(".mid").children(".mid").children(".bar");
 	bar.append('<div class="title">' + title + '</div>');

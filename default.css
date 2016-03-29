@@ -4,6 +4,11 @@
 	src: url('micross.ttf?');
 }
 
+*
+{
+	cursor: url("./res/cursor_default.png") 0 0, auto;
+}
+
 body
 {
 	margin: 0px;
