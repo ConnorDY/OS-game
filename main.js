@@ -49,6 +49,7 @@ function init()
 
 	setInterval(updateTime, 60000);
 	setInterval(cycleStep, 200);
+	setTimeout(fadeIn, 50);
 
 	createWindow("Test Window", 400, 300, 0, 0);
 	createWindow("Another Test Window", 300, 200, 32, 32);
@@ -266,4 +267,21 @@ function checkLength(txt, size)
 	div.html(txt);
 
 	return div.outerWidth() + 1;
+}
+
+function fadeIn()
+{
+	// Fade in
+	var div = $("#fader");
+	var opacity = div.css("opacity");
+
+	if (opacity > 0)
+	{
+		div.css("opacity", opacity - .025);
+		setTimeout(fadeIn, 25);
+	}
+	else div.css({
+		"display":	"none",
+		"z-index":	-1
+	});
 }
