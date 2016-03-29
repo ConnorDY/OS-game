@@ -160,9 +160,9 @@ function activateWindow(id_)
 	// Reset other windows
 	$(".windowt").each(function()
 	{
-		$(this).children(".left").css("background-image", "url('./res/taskbar_window_left.png')");
-		$(this).children(".mid").css("background-image", "url('./res/taskbar_window_mid.png')");
-		$(this).children(".right").css("background-image", "url('./res/taskbar_window_right.png')");
+		$(this).children(".left").css("background-image", "url('./res/taskbar/window_left.png')");
+		$(this).children(".mid").css("background-image", "url('./res/taskbar/window_mid.png')");
+		$(this).children(".right").css("background-image", "url('./res/taskbar/window_right.png')");
 
 		$(this).children(".mid").children(".title").css("top", "6px");
 	});
@@ -178,9 +178,9 @@ function activateWindow(id_)
 	});
 
 	// Set current to active
-	wint.children(".left").css("background-image", "url('./res/taskbar_window_left_s.png')");
-	wint.children(".mid").css("background-image", "url('./res/taskbar_window_mid_s.png')");
-	wint.children(".right").css("background-image", "url('./res/taskbar_window_right_s.png')");
+	wint.children(".left").css("background-image", "url('./res/taskbar/window_left_s.png')");
+	wint.children(".mid").css("background-image", "url('./res/taskbar/window_mid_s.png')");
+	wint.children(".right").css("background-image", "url('./res/taskbar/window_right_s.png')");
 
 	wint.children(".mid").children(".title").css("top", "7px");
 
@@ -223,7 +223,7 @@ function openStart()
 	var btn = $("#btn_start");
 	var menu = $("#menu_start");
 
-	btn.css("background-image", "url(\"./res/start_pressed.png\")");
+	btn.css("background-image", "url(\"./res/start/start_pressed.png\")");
 
 	menu.css("height", ((menuOptions * 38) + (menuDividers * 2) + 6));
 
@@ -237,7 +237,7 @@ function openStart()
 
 function closeStart()
 {
-	$("#btn_start").css("background-image", "url(\"./res/start.png\")");
+	$("#btn_start").css("background-image", "url(\"./res/start/start.png\")");
 	$("#menu_start").css("display", "none");
 
 	startPressed = false;
