@@ -7,8 +7,10 @@ var am = true;
 var menuOptions = 4;
 var menuDividers = 1;
 
+var windowsOpen = 0;
+var activeWindow = 0;
+
 var startPressed = false;
-var dragging = false;
 
 function init()
 {
@@ -23,7 +25,6 @@ function init()
 	$(document).mouseup(function()
 	{
 		$(".window").draggable("disable");
-		dragging = false;
 	});
 
 	$(document).resize(function()
@@ -49,7 +50,8 @@ function init()
 	setInterval(updateTime, 60000);
 	setInterval(cycleStep, 200);
 
-	createWindow("Test Window", 400, 300);
+	createWindow("Test Window", 400, 300, 0, 0);
+	createWindow("Another Test Window", 300, 200, 32, 32);
 }
 
 function cycleStep()
@@ -76,17 +78,18 @@ function updateTime()
 	$("#time").html(timeStr);
 }
 
-function createWindow(title, width, height)
+function createWindow(title, width, height, x, y)
 {
 	// Create window
 	$("#desktop").append('<div class="window" id="window' + id + '"></div>');
-
 	var win = $("#window" + id);
 
-	// Set size
+	// Set size and position
 	win.css({
 		"width":	width,
-		"height":	height 
+		"height":	height,
+		"left":		x,
+		"top":		y
 	});
 
 	// Create inner divs
@@ -106,20 +109,80 @@ function createWindow(title, width, height)
 
 	// Add close button
 	bar.append('<div class="btn_close"></div>');
-	bar.children(".btn_close").click(function ()
+	bar.children(".btn_close").click(function()
 	{
-		$(this).parent().parent().parent().parent().remove();
+		var id_ = $(this).parent().parent().parent().parent().attr("id").substring(6);
+		closeWindow(id_);
 	});
 
-	// Make the window draggable by the title bar
+	// Make the window draggable and activate by the title bar
 	bar.mousedown(function()
 	{
-		$(this).parent().parent().parent().draggable("enable");
-		dragging = true;
+		var w = $(this).parent().parent().parent();
+		activateWindow(w.attr("id").substring(6));
+		w.draggable("enable");
 	});
+
+	// Add the window to the taskbar
+	$("#windows").append('<div class="windowt" id="windowt' + id + '"><div class="left"></div><div class="mid"></div><div class="right"></div></div>');
+	var wint = $("#windowt" + id);
+
+	wint.children(".mid").append('<div class="title">' + title + '</div>');
+
+	wint.click(function()
+	{
+		var id_ = $(this).attr("id").substring(7);
+		activateWindow(id_);
+	});
+
+	var len = checkLength(title, 14);
+	wint.css("width", (len + 16) + "px");
+
+	activateWindow(id);
 
 	// Increase ID value
 	id++;
+}
+
+function activateWindow(id_)
+{
+	var win = $("#window" + id_);
+	var wint = $("#windowt" + id_);
+
+	// Reset other windows
+	$(".windowt").each(function()
+	{
+		$(this).children(".left").css("background-image", "url('./res/taskbar_window_left.png')");
+		$(this).children(".mid").css("background-image", "url('./res/taskbar_window_mid.png')");
+		$(this).children(".right").css("background-image", "url('./res/taskbar_window_right.png')");
+
+		$(this).children(".mid").children(".title").css("top", "6px");
+	});
+
+	$(".window").each(function()
+	{
+		$(this).css("z-index", 0);
+	});
+
+	// Set current to active
+	wint.children(".left").css("background-image", "url('./res/taskbar_window_left_s.png')");
+	wint.children(".mid").css("background-image", "url('./res/taskbar_window_mid_s.png')");
+	wint.children(".right").css("background-image", "url('./res/taskbar_window_right_s.png')");
+
+	wint.children(".mid").children(".title").css("top", "7px");
+
+	win.css("z-index", 1);
+
+	activeWindow = id_;
+}
+
+function closeWindow(id_)
+{
+	var win = $("#window" + id_);
+	var wint = $("#windowt" + id_);
+
+	win.remove();
+	wint.remove();
 }
 
 function handleGenericClick(e)
@@ -176,4 +239,14 @@ function dehighlightOption()
 		"background-color":		"#C0C0C0",
 		"color":				"#000000"
 	});
+}
+
+function checkLength(txt, size)
+{
+	var div = $("#testLength");
+
+	div.css("font-size", size);
+	div.html(txt);
+
+	return div.outerWidth() + 1;
 }

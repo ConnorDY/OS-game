@@ -41,7 +41,6 @@ body
 	width: 100%;
 	height: 28px;
 
-	font-family: MSSansSerif;
 	font-size: 14px;
 
 	background-color: #004D40;
@@ -68,6 +67,70 @@ body
 	height: 28px;
 
 	background-image: url("./res/start.png");
+}
+
+#windows
+{
+	position: relative;
+	left: 2px;
+
+	float: left;
+
+	width: calc(100% - 56px - 11px - 137px);
+	height: 28px;
+}
+
+.windowt
+{
+	position: relative;
+
+	float: left;
+	margin-right: 4px;
+
+	min-width: 80px;
+	height: 100%;
+}
+
+.windowt>.left
+{
+	position: absolute;
+	left: 0px;
+
+	width: 2px;
+	height: 100%;
+
+	background-image: url("./res/taskbar_window_left.png");
+}
+
+.windowt>.mid
+{
+	position: absolute;
+	left: 2px;
+
+	width: calc(100% - 4px);
+	height: 100%;
+
+	background-image: url("./res/taskbar_window_mid.png");
+}
+
+.windowt>.mid>.title
+{
+	position: relative;
+	left: 2px;
+	top: 6px;
+
+	font-size: 14px;
+}
+
+.windowt>.right
+{
+	position: absolute;
+	right: 0px;
+
+	width: 2px;
+	height: 100%;
+
+	background-image: url("./res/taskbar_window_right.png");
 }
 
 #info_panel
@@ -190,7 +253,7 @@ body
 	background-image: url("./res/start_menu_bot.png");
 }
 
-.window
+#desktop>.window
 {
 	box-sizing: border-box;
 
@@ -381,4 +444,15 @@ body
 	height: 3px;
 
 	background-image: url("./res/window_corner_botright.png");
+}
+
+#testLength
+{
+	position: absolute;
+	visibility: hidden;
+
+	height: auto;
+	width: auto;
+
+	white-space: nowrap;
 }
