@@ -169,6 +169,11 @@ function activateWindow(id_)
 	$(".window").each(function()
 	{
 		$(this).css("z-index", 0);
+
+		$(this).children(".mid").children(".mid").children(".bar").css({
+			"background-color":	"#808080",
+			"color":			"#C0C0C0"
+		});
 	});
 
 	// Set current to active
@@ -179,6 +184,11 @@ function activateWindow(id_)
 	wint.children(".mid").children(".title").css("top", "7px");
 
 	win.css("z-index", 1);
+
+	win.children(".mid").children(".mid").children(".bar").css({
+		"background-color":	"#000080",
+		"color":			"#FFFFFF"
+	});
 
 	activeWindow = id_;
 }
