@@ -27,6 +27,17 @@ function init()
 			e.preventDefault();
 	});
 
+	// Disable Text Selection
+	$("body").attr('unselectable','on')
+     .css({'-moz-user-select':'-moz-none',
+           '-moz-user-select':'none',
+           '-o-user-select':'none',
+           '-khtml-user-select':'none', /* you could also put this in a class */
+           '-webkit-user-select':'none',/* and add the CSS class here instead */
+           '-ms-user-select':'none',
+           'user-select':'none'
+     }).bind('selectstart', function(){ return false; });
+
 	// Misc.
 	$(document).mouseup(function()
 	{
@@ -54,7 +65,7 @@ function init()
 	$(".menu_option").mouseout(dehighlightOption);
 
 	setInterval(updateTime, 60000);
-	setInterval(cycleStep, 200);
+	setInterval(cycleStep, 50);
 	setTimeout(fadeIn, 50);
 
 	createWindow("Test Window", 400, 300, 0, 0);
@@ -246,13 +257,16 @@ function resizeWindow(e)
 			var mx = e.clientX;
 			var my = e.clientY;
 
+			if (mx < 0) mx = 0;
+			if (my < 0) my = 0;
+
 			var dw = mx - temp_mx;
 			var dh = my - temp_my;
 
 			temp_mx = mx;
 			temp_my = my;
 
-			resizeActiveWindow(dw, dh);
+			resizeActiveWindowC(dw, dh);
 		});
 
 		$(window).mouseup(function()
@@ -268,7 +282,7 @@ function resizeWindow(e)
 	else resizingWindow = false;
 }
 
-function resizeActiveWindow(dw, dh)
+function resizeActiveWindowC(dw, dh)
 {
 	var win = $("#window" + activeWindow);
 
@@ -276,28 +290,66 @@ function resizeActiveWindow(dw, dh)
 	{
 		dw *= -1;
 		dh *= -1;
+	}
+	else if (resizePos == 1) dh *= -1;
+	else if (resizePos == 3) dw *= -1;
 
-		win.css({
+	var w = win.width() + dw;
+	var h = win.height() + dh;
+
+	if (w < 200)
+	{
+		w = 200;
+		dw = 0;
+	}
+
+	if (h < 200)
+	{
+		h = 200;
+		dh = 0;
+	}
+
+	if (resizePos == 1 || resizePos == 2)
+	{
+		if (dw > 0 && temp_mx < win.offset().left + w) w -= dw;
+	}
+
+	if (resizePos == 2 || resizePos == 3)
+	{
+		if (dh > 0 && temp_my < win.offset().top + h) h -= dh;
+	}
+
+	if (resizePos == 0 || resizePos == 3)
+	{
+		if (dw > 0 && temp_mx > win.offset().left)
+		{
+			w -= dw
+			dw = 0;
+		}
+	}
+
+	if (resizePos == 0 || resizePos == 1)
+	{
+		if (dh > 0 && temp_my > win.offset().top)
+		{
+			h -= dh;
+			dh = 0;
+		}
+	}
+
+	if (resizePos == 0) win.css({
 			"left":	win.offset().left - dw,
 			"top": 	win.offset().top - dh
-		});
-	}
+	});
 	else if (resizePos == 1)
 	{
-		dh *= -1;
-
 		win.css("top", win.offset().top - dh);
 	}
-	else if (resizePos == 3)
-	{
-		dw *= -1;
-
-		win.css("left", win.offset().left - dw);
-	}
+	else if (resizePos == 3) win.css("left", win.offset().left - dw);
 
 	win.css({
-		"width":	win.width() + dw,
-		"height":	win.height() + dh
+		"width":	w,
+		"height":	h
 	});
 }
 
