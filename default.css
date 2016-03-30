@@ -6,7 +6,7 @@
 
 *
 {
-	cursor: url("./res/cursor_default.png") 0 0, auto;
+	cursor: url("./res/cursor/default.png") 0 0, auto;
 }
 
 body
@@ -378,6 +378,11 @@ body
 	background-image: url("./res/windows/side_right.png");
 }
 
+.window>.mid>.side_left:hover, .window>.mid>.side_right:hover
+{
+	cursor: url("./res/cursor/resize_ew.png") 8 3, auto;
+}
+
 .window>.top>.side_top
 {
 	position: absolute;
@@ -390,7 +395,6 @@ body
 	background-image: url("./res/windows/side_top.png");
 }
 
-
 .window>.bot>.side_bot
 {
 	position: absolute;
@@ -401,6 +405,11 @@ body
 	height: 3px;
 
 	background-image: url("./res/windows/side_bot.png");
+}
+
+.window>.top>.side_top:hover, .window>.bot>.side_bot:hover
+{
+	cursor: url("./res/cursor/resize_ns.png") 3 8, auto;
 }
 
 .window>.top>.corner_topleft
@@ -449,6 +458,16 @@ body
 	height: 3px;
 
 	background-image: url("./res/windows/corner_botright.png");
+}
+
+.window>.top>.corner_topleft:hover, .window>.bot>.corner_botright:hover
+{
+	cursor: url("./res/cursor/resize_nw_se.png") 6 6, auto;
+}
+
+.window>.top>.corner_topright:hover, .window>.bot>.corner_botleft:hover
+{
+	cursor: url("./res/cursor/resize_sw_ne.png") 6 6, auto;
 }
 
 #fader

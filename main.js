@@ -11,6 +11,12 @@ var windowsOpen = 0;
 var activeWindow = 0;
 
 var startPressed = false;
+var resizingWindow = false;
+var resizingCorner = false;
+var resizingSide = false;
+
+var temp_mx = 0;
+var temp_my = 0;
 
 function init()
 {
@@ -98,6 +104,10 @@ function createWindow(title, width, height, x, y)
 	win.append('<div class="mid"><div class="side_left"></div><div class="mid"><div class="bar"></div></div><div class="side_right"></div></div>');
 	win.append('<div class="bot"><div class="corner_botleft"></div><div class="side_bot"></div><div class="corner_botright"></div></div>');
 
+	var btop = win.children(".top");
+	var bmid = win.children(".mid");
+	var bbot = win.children(".bot");
+
 	// Make the window draggable, but disable dragging initially
 	win.draggable({
 		"containment": $("#desktop")
@@ -112,7 +122,7 @@ function createWindow(title, width, height, x, y)
 	});
 
 	// Set title
-	var bar = win.children(".mid").children(".mid").children(".bar");
+	var bar = bmid.children(".mid").children(".bar");
 	bar.append('<div class="title">' + title + '</div>');
 
 	// Add close button
@@ -122,6 +132,12 @@ function createWindow(title, width, height, x, y)
 		var id_ = $(this).parent().parent().parent().parent().attr("id").substring(6);
 		closeWindow(id_);
 	});
+
+	// Make window resizable
+	btop.children().click(resizeWindow);
+	bmid.children(".side_left").click(resizeWindow);
+	bmid.children(".side_right").click(resizeWindow);
+	bbot.children().click(resizeWindow);
 
 	// Make the window draggable and activate by the title bar
 	bar.mousedown(function()
@@ -201,6 +217,29 @@ function closeWindow(id_)
 
 	win.remove();
 	wint.remove();
+}
+
+function resizeWindow(e)
+{
+	var elem = $(this);
+	var win = elem.parent().parent();
+
+	activateWindow(win.attr("id").substring(7));
+
+	temp_mx = e.clientX;
+	temp_my = e.clientY;
+
+	resizingWindow = true;
+
+	if (elem.attr("class").substring(0, 6) == "corner")
+	{
+		resizingCorner = true;
+	}
+	else if (elem.attr("class").substring(0, 4) == "side")
+	{
+		resizingSide = true;
+	}
+	else resizingWindow = false;
 }
 
 function handleGenericClick(e)
