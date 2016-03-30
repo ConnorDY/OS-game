@@ -12,11 +12,11 @@ var activeWindow = 0;
 
 var startPressed = false;
 var resizingWindow = false;
-var resizingCorner = false;
-var resizingSide = false;
 
 var temp_mx = 0;
 var temp_my = 0;
+
+var resizePos = -1;
 
 function init()
 {
@@ -134,10 +134,10 @@ function createWindow(title, width, height, x, y)
 	});
 
 	// Make window resizable
-	btop.children().click(resizeWindow);
-	bmid.children(".side_left").click(resizeWindow);
-	bmid.children(".side_right").click(resizeWindow);
-	bbot.children().click(resizeWindow);
+	btop.children().mousedown(resizeWindow);
+	bmid.children(".side_left").mousedown(resizeWindow);
+	bmid.children(".side_right").mousedown(resizeWindow);
+	bbot.children().mousedown(resizeWindow);
 
 	// Make the window draggable and activate by the title bar
 	bar.mousedown(function()
@@ -224,7 +224,7 @@ function resizeWindow(e)
 	var elem = $(this);
 	var win = elem.parent().parent();
 
-	activateWindow(win.attr("id").substring(7));
+	activateWindow(win.attr("id").substring(6));
 
 	temp_mx = e.clientX;
 	temp_my = e.clientY;
@@ -233,13 +233,72 @@ function resizeWindow(e)
 
 	if (elem.attr("class").substring(0, 6) == "corner")
 	{
-		resizingCorner = true;
+		var pos = elem.attr("class").substring(7);
+
+		if (pos == "topleft") resizePos = 0;
+		else if (pos == "topright") resizePos = 1;
+		else if (pos == "botright") resizePos = 2;
+		else if (pos == "botleft") resizePos = 3;
+		else resizePos = -1;
+
+		$(window).mousemove(function(e)
+		{
+			var mx = e.clientX;
+			var my = e.clientY;
+
+			var dw = mx - temp_mx;
+			var dh = my - temp_my;
+
+			temp_mx = mx;
+			temp_my = my;
+
+			resizeActiveWindow(dw, dh);
+		});
+
+		$(window).mouseup(function()
+		{
+			$(window).unbind("mousemove");
+			resizingWindow = false;
+		});
 	}
 	else if (elem.attr("class").substring(0, 4) == "side")
 	{
-		resizingSide = true;
+
 	}
 	else resizingWindow = false;
+}
+
+function resizeActiveWindow(dw, dh)
+{
+	var win = $("#window" + activeWindow);
+
+	if (resizePos == 0)
+	{
+		dw *= -1;
+		dh *= -1;
+
+		win.css({
+			"left":	win.offset().left - dw,
+			"top": 	win.offset().top - dh
+		});
+	}
+	else if (resizePos == 1)
+	{
+		dh *= -1;
+
+		win.css("top", win.offset().top - dh);
+	}
+	else if (resizePos == 3)
+	{
+		dw *= -1;
+
+		win.css("left", win.offset().left - dw);
+	}
+
+	win.css({
+		"width":	win.width() + dw,
+		"height":	win.height() + dh
+	});
 }
 
 function handleGenericClick(e)
