@@ -277,7 +277,39 @@ function resizeWindow(e)
 	}
 	else if (elem.attr("class").substring(0, 4) == "side")
 	{
+		var pos = elem.attr("class").substring(5);
 
+		if (pos == "top") resizePos = 0;
+		else if (pos == "right") resizePos = 1;
+		else if (pos == "bot") resizePos = 2;
+		else if (pos == "left") resizePos = 3;
+		else resizePos = -1;
+
+		$(window).mousemove(function(e)
+		{
+			var mx = e.clientX;
+			var my = e.clientY;
+
+			if (mx < 0) mx = 0;
+			if (my < 0) my = 0;
+
+			var dw = 0;
+			var dh = 0;
+
+			if (resizePos == 1 || resizePos == 3) dw = mx - temp_mx;
+			if (resizePos == 0 || resizePos == 2) dh = my - temp_my;
+
+			temp_mx = mx;
+			temp_my = my;
+
+			resizeActiveWindowS(dw, dh);
+		});
+
+		$(window).mouseup(function()
+		{
+			$(window).unbind("mousemove");
+			resizingWindow = false;
+		});
 	}
 	else resizingWindow = false;
 }
@@ -351,6 +383,58 @@ function resizeActiveWindowC(dw, dh)
 		"width":	w,
 		"height":	h
 	});
+}
+
+function resizeActiveWindowS(dw, dh)
+{
+	var win = $("#window" + activeWindow);
+
+	if (dw != 0)
+	{
+		if (resizePos == 3) dw *= -1;
+
+		var w = win.width() + dw;
+
+		if (w < 200)
+		{
+			w = 200;
+			dw = 0;
+		}
+
+		if (resizePos == 1 && dw > 0 && temp_mx < win.offset().left + w) w -= dw;
+		else if (resizePos == 3 && dw > 0 && temp_mx > win.offset().left)
+		{
+			w -= dw
+			dw = 0;
+		}
+
+		if (resizePos == 3) win.css("left", win.offset().left - dw);
+
+		win.css("width", w);
+	}
+	else if (dh != 0)
+	{
+		if (resizePos == 0) dh *= -1;
+
+		var h = win.height() + dh;
+
+		if (h < 200)
+		{
+			h = 200;
+			dh = 0;
+		}
+
+		if (resizePos == 2 && dh > 0 && temp_my < win.offset().top + h) h -= dh;
+		else if (resizePos == 0 && dh > 0 && temp_my > win.offset().top)
+		{
+			h -= dh;
+			dh = 0;
+		}
+
+		if (resizePos == 0) win.css("top", win.offset().top - dh);
+
+		win.css("height", h);
+	}
 }
 
 function handleGenericClick(e)
