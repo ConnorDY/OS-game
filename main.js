@@ -446,12 +446,16 @@ function resizeActiveWindowS(dw, dh)
 		// Negate dw if the side is left
 		if (resizePos == 3) dw *= -1;
 
-		// Determine new width and make sure it isn't smaller than 200
+		// Determine minimum width
+		var minw = 200;
+		if (win.children(".info_minwidth")) minw = win.children(".info_minwidth").html();
+
+		// Determine new width and make sure it isn't smaller than the minimum width
 		var w = win.width() + dw;
 
-		if (w < 200)
+		if (w < minw)
 		{
-			w = 200;
+			w = minw;
 			dw = 0;
 		}
 
@@ -474,12 +478,16 @@ function resizeActiveWindowS(dw, dh)
 		// Negate dh if the side is top
 		if (resizePos == 0) dh *= -1;
 
-		// Determine new height and make sure it isn't smaller than 200
+		// Determine minimum height
+		var minh = 200;
+		if (win.children(".info_minheight")) minh = win.children(".info_minheight").html();
+
+		// Determine new height and make sure it isn't smaller than the minimum height
 		var h = win.height() + dh;
 
-		if (h < 200)
+		if (h < minh)
 		{
-			h = 200;
+			h = minh;
 			dh = 0;
 		}
 
