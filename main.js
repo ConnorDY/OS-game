@@ -375,8 +375,8 @@ function resizeActiveWindowC(dw, dh)
 	var minw = 200;
 	var minh = 200;
 
-	if (win.children(".info_minwidth")) minw = win.children(".info_minwidth").html();
-	if (win.children(".info_minheight")) minh = win.children(".info_minheight").html();
+	if (win.children(".info_minwidth").length == 1) minw = win.children(".info_minwidth").html();
+	if (win.children(".info_minheight").length == 1) minh = win.children(".info_minheight").html();
 
 	// Don't let the window be smaller than its minimum size
 	if (w < minw)
@@ -448,7 +448,7 @@ function resizeActiveWindowS(dw, dh)
 
 		// Determine minimum width
 		var minw = 200;
-		if (win.children(".info_minwidth")) minw = win.children(".info_minwidth").html();
+		if (win.children(".info_minwidth").length == 1) minw = win.children(".info_minwidth").html();
 
 		// Determine new width and make sure it isn't smaller than the minimum width
 		var w = win.width() + dw;
@@ -480,7 +480,7 @@ function resizeActiveWindowS(dw, dh)
 
 		// Determine minimum height
 		var minh = 200;
-		if (win.children(".info_minheight")) minh = win.children(".info_minheight").html();
+		if (win.children(".info_minheight").length == 1) minh = win.children(".info_minheight").html();
 
 		// Determine new height and make sure it isn't smaller than the minimum height
 		var h = win.height() + dh;
