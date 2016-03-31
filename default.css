@@ -233,6 +233,37 @@ body
 	font-size: 16px;
 }
 
+.menu_option>.icon
+{
+	float: left;
+
+	position: relative;
+	left: 4px;
+
+	width: 32px;
+	height: 38px;
+}
+
+.menu_option>#icon_programs
+{
+	background-image: url("./res/start/icons/programs.png");
+}
+
+.menu_option>#icon_documents
+{
+	background-image: url("./res/start/icons/documents.png");
+}
+
+.menu_option>#icon_settings
+{
+	background-image: url("./res/start/icons/settings.png");
+}
+
+.menu_option>#icon_shutdown
+{
+	background-image: url("./res/start/icons/shutdown.png");
+}
+
 .menu_option>.text
 {
 	position: relative;
