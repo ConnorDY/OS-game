@@ -17,6 +17,8 @@ var resizingWindow = false;
 var temp_mx = 0;
 var temp_my = 0;
 
+var tempJSON = null;
+
 var resizePos = -1;
 
 function init()
@@ -591,15 +593,17 @@ function loadProgram(name)
 	// Get program info
 	$.getJSON("./programs/" + name + "/info.json", function(data)
 	{
+		tempJSON = data;
+
 		// Load code for it
 		var program = programs.children("#program" + pid);
-		$.getScript("./programs/" + data.name + "/code.js", function(a, b, c, data)
+		$.getScript("./programs/" + data.name + "/code.js", function()
 		{
 			// Create window for this program
-			createWindow(data.title, data.min_width, data.min_height, 0, 0);
+			createWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
 
 			// Call initialization function
-			var func = "prg_" + data.name + "_init";
+			var func = "prg_" + tempJSON.name + "_init";
 			$(document)[func](pid, id - 1);
 
 			// Increase PID value
