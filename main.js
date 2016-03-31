@@ -604,6 +604,7 @@ function loadProgram(name)
 
 			// Call initialization function
 			var func = "prg_" + tempJSON.name + "_init";
+			alert(func);
 			$(document)[func](pid, id - 1);
 
 			// Increase PID value
