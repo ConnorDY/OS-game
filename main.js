@@ -591,7 +591,9 @@ function loadProgram(name)
 	programs.append('<div id="program' + pid + '"></div>');
 
 	// Get program info
-	$.getJSON("./programs/" + name + "/info.json", function(data)
+	var data;
+
+	$.getJSON("./programs/" + name + "/info.json", data, function(data)
 	{
 		$.each(data, function(key, val)
 		{
@@ -601,7 +603,7 @@ function loadProgram(name)
 	
 	// Load code for it
 	var program = programs.children("#program" + pid);
-	program.append('<script src="./programs/' + name + '/code.js"></script>');
+	$.getScript("./programs/" + name + "/code.js");
 
 	// Create window for this program
 	//createWindow("Title");
