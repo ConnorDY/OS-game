@@ -70,6 +70,7 @@ function init()
 
 	createWindow("Test Window", 400, 300, 0, 0);
 	createWindow("Another Test Window", 300, 200, 32, 32);
+	createWindow("A Window With a Title That's Pretty Damn Long", 400, 250, 500, 0);
 }
 
 function cycleStep()
@@ -162,16 +163,31 @@ function createWindow(title, width, height, x, y)
 	$("#windows").append('<div class="windowt" id="windowt' + id + '"><div class="left"></div><div class="mid"></div><div class="right"></div></div>');
 	var wint = $("#windowt" + id);
 
-	wint.children(".mid").append('<div class="title">' + title + '</div>');
-
 	wint.click(function()
 	{
 		var id_ = $(this).attr("id").substring(7);
 		activateWindow(id_);
 	});
 
-	var len = checkLength(title, 14);
-	wint.css("width", (len + 16) + "px");
+	var footerTitle = title;
+
+	if (checkLength(footerTitle, 14) > 178)
+	{
+		var i = title.length - 2;
+
+		while (i > 3)
+		{
+			footerTitle = title.substring(0, i) + "...";
+			if (checkLength(footerTitle, 14) < 178) break;
+			i--;
+		}
+	}
+
+	wint.children(".mid").append('<div class="title">' + footerTitle + '</div>');
+	wint.css("width", (checkLength(footerTitle, 14) + 16) + "px");
+
+	// Set hidden window info and then activate it
+	win.append('<div class="hidden info_title">' + title + '</div>');
 
 	activateWindow(id);
 
@@ -267,6 +283,7 @@ function resizeWindow(e)
 			temp_my = my;
 
 			resizeActiveWindowC(dw, dh);
+			checkWindowTitle(activeWindow);
 		});
 
 		$(window).mouseup(function()
@@ -303,6 +320,7 @@ function resizeWindow(e)
 			temp_my = my;
 
 			resizeActiveWindowS(dw, dh);
+			checkWindowTitle(activeWindow);
 		});
 
 		$(window).mouseup(function()
@@ -435,6 +453,32 @@ function resizeActiveWindowS(dw, dh)
 
 		win.css("height", h);
 	}
+}
+
+function checkWindowTitle(id_)
+{
+	var win = $("#window" + id_);
+	var bar = win.children(".mid").children(".mid").children(".bar");
+	var container = bar.children(".title");
+	var title = win.children(".info_title").html();
+
+	var w = container.width();
+
+	if (checkLength(title, 16) > w)
+	{
+		var i = title.length - 2;
+		var newTitle = "";
+
+		while (i > 3)
+		{
+			newTitle = title.substring(0, i) + "...";
+			if (checkLength(newTitle, 16) < w) break;
+			i--;
+		}
+
+		container.html(newTitle);
+	}
+	else container.html(title);
 }
 
 function handleGenericClick(e)

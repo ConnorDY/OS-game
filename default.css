@@ -330,6 +330,10 @@ body
 	position: relative;
 	top: 0px;
 	left: 4px;
+
+	width: calc(100% - 8px - 15px - 6px);
+
+	font-size: 16px;
 }
 
 .mid>.bar>.btn_close
@@ -496,4 +500,9 @@ body
 	width: auto;
 
 	white-space: nowrap;
+}
+
+.hidden
+{
+	display: none;
 }
