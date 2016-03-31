@@ -4,7 +4,7 @@ var hours = 3;
 var minutes = 21;
 var am = true;
 
-var menuOptions = 4;
+var menuOptions = 6;
 var menuDividers = 1;
 
 var windowsOpen = 0;

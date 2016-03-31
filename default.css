@@ -244,22 +244,32 @@ body
 	height: 38px;
 }
 
-.menu_option>#icon_programs
+#option_programs>.icon
 {
 	background-image: url("./res/start/icons/programs.png");
 }
 
-.menu_option>#icon_documents
+#option_documents>.icon
 {
 	background-image: url("./res/start/icons/documents.png");
 }
 
-.menu_option>#icon_settings
+#option_settings>.icon
 {
 	background-image: url("./res/start/icons/settings.png");
 }
 
-.menu_option>#icon_shutdown
+#option_help>.icon
+{
+	background-image: url("./res/start/icons/help.png");
+}
+
+#option_run>.icon
+{
+	background-image: url("./res/start/icons/run.png");
+}
+
+#option_shutdown>.icon
 {
 	background-image: url("./res/start/icons/shutdown.png");
 }
