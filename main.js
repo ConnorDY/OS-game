@@ -90,8 +90,6 @@ function cycleStep()
 	{
 		var win = windowQueue.pop();
 		createWindow(win[0], win[1], win[2], win[3]);
-		var func = win[4];
-		func();
 	}
 
 	if (!resizingWindow)
@@ -122,9 +120,9 @@ function updateTime()
 	$("#time").html(timeStr);
 }
 
-function addWindow(title, width, height, x, y, success)
+function addWindow(title, width, height, x, y)
 {
-	windowQueue.push([title, width, height, x, y, success]);
+	windowQueue.push([title, width, height, x, y]);
 }
 
 function createWindow(title, width, height, x, y)
@@ -636,11 +634,13 @@ function loadProgram(name)
 	{
 		tempJSON = data;
 
+		// Create window for this program
+		addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
+
 		// Load code for it
-		var program = programs.children("#program" + pid);
 		$.getScript("./programs/" + data.name + "/code.js", function()
 		{
-			var success = function()
+			setTimeout(function()
 			{
 				// Add hidden info to window
 				var win = $("#window" + (id - 1));
@@ -659,10 +659,7 @@ function loadProgram(name)
 
 				// Increase PID value
 				pid++;
-			};
-
-			// Create window for this program
-			addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0, success);
+			}, 25);
 		});
 	});
 }
