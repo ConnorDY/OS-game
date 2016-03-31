@@ -371,16 +371,23 @@ function resizeActiveWindowC(dw, dh)
 	var w = win.width() + dw;
 	var h = win.height() + dh;
 
-	// Don't let the window be smaller than 200x200
-	if (w < 200)
+	// Determine minimum size
+	var minw = 200;
+	var minh = 200;
+
+	if (win.children(".info_minwidth")) minw = win.children(".info_minwidth").html();
+	if (win.children(".info_minheight")) minh = win.children(".info_minheight").html();
+
+	// Don't let the window be smaller than its minimum size
+	if (w < minw)
 	{
-		w = 200;
+		w = minw;
 		dw = 0;
 	}
 
-	if (h < 200)
+	if (h < minh)
 	{
-		h = 200;
+		h = minh;
 		dh = 0;
 	}
 
@@ -601,6 +608,12 @@ function loadProgram(name)
 		{
 			// Create window for this program
 			createWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
+
+			// Add hidden info to window
+			var win = $("#window" + (id - 1));
+			win.append('<div class="hidden info_pid">' + pid + '</div>');
+			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
+			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
 
 			// Call initialization function
 			var func = "prg_" + tempJSON.name + "_init";
