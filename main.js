@@ -75,9 +75,7 @@ function init()
 	setTimeout(fadeIn, 50);
 
 	// Default set up
-	createWindow("Test Window", 400, 300, 0, 0);
-	createWindow("Another Test Window", 300, 200, 32, 32);
-	createWindow("A Window With a Title That's Pretty Damn Long", 400, 250, 500, 0);
+	loadProgram("explorer");
 }
 
 function cycleStep()
@@ -622,6 +620,9 @@ function loadProgram(name)
 			win.append('<div class="hidden info_pid">' + pid + '</div>');
 			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
 			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
+
+			// Store window id in program div
+			$("#program" + pid).append('<div class="hidden info_wid">' + (id - 1) + '</div>');
 
 			// Call initialization function
 			var func = "prg_" + tempJSON.name + "_init";
