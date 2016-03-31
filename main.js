@@ -589,17 +589,18 @@ function loadProgram(name)
 	programs.append('<div id="program' + pid + '"></div>');
 
 	// Get program info
-	$.getJSON("./programs/" + name + "/info.json", function(data, name)
+	$.getJSON("./programs/" + name + "/info.json", function(data)
 	{
 		// Load code for it
 		var program = programs.children("#program" + pid);
-		$.getScript("./programs/" + name + "/code.js");
+		$.getScript("./programs/" + data.name + "/code.js");
 
 		// Create window for this program
 		createWindow(data.title, data.min_width, data.min_height, 0, 0);
 
 		// Call initialization function
-		$(document)["prg_" + name + "_init"](pid, id - 1);
+		var func = "prg_" + data.name + "_init";
+		$(document)[func](pid, id - 1);
 
 		// Increase PID value
 		pid++;
