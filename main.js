@@ -593,17 +593,18 @@ function loadProgram(name)
 	{
 		// Load code for it
 		var program = programs.children("#program" + pid);
-		$.getScript("./programs/" + data.name + "/code.js");
+		$.getScript("./programs/" + data.name + "/code.js", function(a, b, c, data)
+		{
+			// Create window for this program
+			createWindow(data.title, data.min_width, data.min_height, 0, 0);
 
-		// Create window for this program
-		createWindow(data.title, data.min_width, data.min_height, 0, 0);
+			// Call initialization function
+			var func = "prg_" + data.name + "_init";
+			$(document)[func](pid, id - 1);
 
-		// Call initialization function
-		var func = "prg_" + data.name + "_init";
-		$(document)[func](pid, id - 1);
-
-		// Increase PID value
-		pid++;
+			// Increase PID value
+			pid++;
+		});
 	});
 }
 
