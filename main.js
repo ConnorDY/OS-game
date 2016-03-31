@@ -1,4 +1,5 @@
 var id = 0;
+var pid = 0;
 
 var hours = 3;
 var minutes = 21;
@@ -15,6 +16,8 @@ var resizingWindow = false;
 
 var temp_mx = 0;
 var temp_my = 0;
+
+var tempJSON = [[]];
 
 var resizePos = -1;
 
@@ -579,6 +582,32 @@ function dehighlightOption()
 		"background-color":		"#C0C0C0",
 		"color":				"#000000"
 	});
+}
+
+function loadProgram(name)
+{
+	// Create program div
+	var programs = $("#programs");
+	programs.append('<div id="program' + pid + '"></div>');
+
+	// Get program info
+	$.getJSON("./programs/" + name + "/info.json", function(data)
+	{
+		$.each(data, function(key, val)
+		{
+			
+		});
+	});
+	
+	// Load code for it
+	var program = programs.children("#program" + pid);
+	program.append('<script src="./programs/' + name + '/code.js"></script>');
+
+	// Create window for this program
+	//createWindow("Title");
+
+	// Increase PID value
+	pid++;
 }
 
 function checkLength(txt, size)
