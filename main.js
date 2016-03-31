@@ -77,6 +77,7 @@ function init()
 	setTimeout(fadeIn, 50);
 
 	// Default set up
+	loadProgram("test_program");
 	loadProgram("explorer");
 }
 
