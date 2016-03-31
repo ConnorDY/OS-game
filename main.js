@@ -27,23 +27,25 @@ function init()
 			e.preventDefault();
 	});
 
-	// Disable Text Selection
-	$("body").attr('unselectable','on')
-     .css({'-moz-user-select':'-moz-none',
-           '-moz-user-select':'none',
-           '-o-user-select':'none',
-           '-khtml-user-select':'none', /* you could also put this in a class */
-           '-webkit-user-select':'none',/* and add the CSS class here instead */
-           '-ms-user-select':'none',
-           'user-select':'none'
+	// Disable text selection
+	$("body").attr('unselectable','on').css(
+     {
+		'-moz-user-select':		'-moz-none',
+		'-moz-user-select':		'none',
+		'-o-user-select':		'none',
+		'-khtml-user-select':	'none',
+		'-webkit-user-select':	'none',
+		'-ms-user-select':		'none',
+		'user-select':			'none'
      }).bind('selectstart', function(){ return false; });
 
-	// Misc.
+	// Disable window dragging on release of mouse left
 	$(document).mouseup(function()
 	{
 		$(".window").draggable("disable");
 	});
 
+	// Resize interface whenever the window resizes
 	$(document).resize(function()
 	{
 		var d = $("#desktop");
@@ -58,6 +60,7 @@ function init()
 		});
 	});
 
+	// Misc.
 	$("body").click(handleGenericClick);
 	$("#btn_start").click(pressStart);
 
@@ -68,6 +71,7 @@ function init()
 	setInterval(cycleStep, 50);
 	setTimeout(fadeIn, 50);
 
+	// Default set up
 	createWindow("Test Window", 400, 300, 0, 0);
 	createWindow("Another Test Window", 300, 200, 32, 32);
 	createWindow("A Window With a Title That's Pretty Damn Long", 400, 250, 500, 0);
@@ -171,6 +175,7 @@ function createWindow(title, width, height, x, y)
 
 	var footerTitle = title;
 
+	// Short footer title if necessary
 	if (checkLength(footerTitle, 14) > 178)
 	{
 		var i = title.length - 2;
@@ -248,18 +253,23 @@ function closeWindow(id_)
 
 function resizeWindow(e)
 {
+	// Get the window element and activate it
 	var elem = $(this);
 	var win = elem.parent().parent();
 
 	activateWindow(win.attr("id").substring(6));
 
+	// Set temp_mx/y to the current mouse coords
 	temp_mx = e.clientX;
 	temp_my = e.clientY;
 
+	// Let the system know we are resizing a window
 	resizingWindow = true;
 
+	// If the window is being resized by a corner
 	if (elem.attr("class").substring(0, 6) == "corner")
 	{
+		// Determine what corner was selected
 		var pos = elem.attr("class").substring(7);
 
 		if (pos == "topleft") resizePos = 0;
@@ -268,8 +278,10 @@ function resizeWindow(e)
 		else if (pos == "botleft") resizePos = 3;
 		else resizePos = -1;
 
+		// Function for moving mouse/dragging corner
 		$(window).mousemove(function(e)
 		{
+			// Determine the change in mouse position
 			var mx = e.clientX;
 			var my = e.clientY;
 
@@ -282,6 +294,7 @@ function resizeWindow(e)
 			temp_mx = mx;
 			temp_my = my;
 
+			// Resize window based on these changes and make the window title fit
 			resizeActiveWindowC(dw, dh);
 			checkWindowTitle(activeWindow);
 		});
@@ -292,8 +305,10 @@ function resizeWindow(e)
 			resizingWindow = false;
 		});
 	}
+	// If the window is being resized by a side
 	else if (elem.attr("class").substring(0, 4) == "side")
 	{
+		// Determine what side was selected
 		var pos = elem.attr("class").substring(5);
 
 		if (pos == "top") resizePos = 0;
@@ -302,8 +317,10 @@ function resizeWindow(e)
 		else if (pos == "left") resizePos = 3;
 		else resizePos = -1;
 
+		// Function for moving mouse/dragging side
 		$(window).mousemove(function(e)
 		{
+			// Determine the change in mouse position
 			var mx = e.clientX;
 			var my = e.clientY;
 
@@ -313,12 +330,14 @@ function resizeWindow(e)
 			var dw = 0;
 			var dh = 0;
 
+			// Only determine change for the correct axis of movement
 			if (resizePos == 1 || resizePos == 3) dw = mx - temp_mx;
 			if (resizePos == 0 || resizePos == 2) dh = my - temp_my;
 
 			temp_mx = mx;
 			temp_my = my;
 
+			// Resize window based on these changes and make the window title fit
 			resizeActiveWindowS(dw, dh);
 			checkWindowTitle(activeWindow);
 		});
@@ -336,6 +355,7 @@ function resizeActiveWindowC(dw, dh)
 {
 	var win = $("#window" + activeWindow);
 
+	// Negate dw and/or dh dependent on the corner
 	if (resizePos == 0)
 	{
 		dw *= -1;
@@ -344,9 +364,11 @@ function resizeActiveWindowC(dw, dh)
 	else if (resizePos == 1) dh *= -1;
 	else if (resizePos == 3) dw *= -1;
 
+	// Determine the new window width/height
 	var w = win.width() + dw;
 	var h = win.height() + dh;
 
+	// Don't let the window be smaller than 200x200
 	if (w < 200)
 	{
 		w = 200;
@@ -359,6 +381,7 @@ function resizeActiveWindowC(dw, dh)
 		dh = 0;
 	}
 
+	// Don't resize when the mouse is inside the window
 	if (resizePos == 1 || resizePos == 2)
 	{
 		if (dw > 0 && temp_mx < win.offset().left + w) w -= dw;
@@ -387,6 +410,7 @@ function resizeActiveWindowC(dw, dh)
 		}
 	}
 
+	// Set new window position/size
 	if (resizePos == 0) win.css({
 			"left":	win.offset().left - dw,
 			"top": 	win.offset().top - dh
@@ -409,8 +433,10 @@ function resizeActiveWindowS(dw, dh)
 
 	if (dw != 0)
 	{
+		// Negate dw if the side is left
 		if (resizePos == 3) dw *= -1;
 
+		// Determine new width and make sure it isn't smaller than 200
 		var w = win.width() + dw;
 
 		if (w < 200)
@@ -419,6 +445,7 @@ function resizeActiveWindowS(dw, dh)
 			dw = 0;
 		}
 
+		// Don't resize when the mouse is inside the window
 		if (resizePos == 1 && dw > 0 && temp_mx < win.offset().left + w) w -= dw;
 		else if (resizePos == 3 && dw > 0 && temp_mx > win.offset().left)
 		{
@@ -426,14 +453,18 @@ function resizeActiveWindowS(dw, dh)
 			dw = 0;
 		}
 
+		// Move window position if the side is left
 		if (resizePos == 3) win.css("left", win.offset().left - dw);
 
+		// Set new width
 		win.css("width", w);
 	}
 	else if (dh != 0)
 	{
+		// Negate dh if the side is top
 		if (resizePos == 0) dh *= -1;
 
+		// Determine new height and make sure it isn't smaller than 200
 		var h = win.height() + dh;
 
 		if (h < 200)
@@ -442,6 +473,7 @@ function resizeActiveWindowS(dw, dh)
 			dh = 0;
 		}
 
+		// Don't resize when the mouse is inside the window
 		if (resizePos == 2 && dh > 0 && temp_my < win.offset().top + h) h -= dh;
 		else if (resizePos == 0 && dh > 0 && temp_my > win.offset().top)
 		{
@@ -449,21 +481,26 @@ function resizeActiveWindowS(dw, dh)
 			dh = 0;
 		}
 
+		// Move the window if the side is top
 		if (resizePos == 0) win.css("top", win.offset().top - dh);
 
+		// Set the new height
 		win.css("height", h);
 	}
 }
 
 function checkWindowTitle(id_)
 {
+	// Get the window, bar, title container, and title
 	var win = $("#window" + id_);
 	var bar = win.children(".mid").children(".mid").children(".bar");
 	var container = bar.children(".title");
 	var title = win.children(".info_title").html();
 
+	// Get width of the title container
 	var w = container.width();
 
+	// Shorten the title if the window is too small to fit it
 	if (checkLength(title, 16) > w)
 	{
 		var i = title.length - 2;
@@ -485,11 +522,13 @@ function handleGenericClick(e)
 {
 	var target = $(e.target);
 
+	// Close the start menu if clicking anywhere besides the start button
 	if (!target.is("#btn_start")) closeStart();
 }
 
 function pressStart()
 {
+	// Toggle the start menu being open/closed
 	startPressed = !startPressed;
 
 	if (startPressed) openStart();
@@ -498,13 +537,17 @@ function pressStart()
 
 function openStart()
 {
+	// Get start button and menu
 	var btn = $("#btn_start");
 	var menu = $("#menu_start");
 
+	// Change the button to pressed
 	btn.css("background-image", "url(\"./res/start/start_pressed.png\")");
 
+	// Determine height of menu
 	menu.css("height", ((menuOptions * 38) + (menuDividers * 2) + 6));
 
+	// Set the menu position and make it visible
 	menu.css({
 		"display":	"block",
 		"top":		(btn.offset().top - menu.height() + 4)
@@ -515,6 +558,7 @@ function openStart()
 
 function closeStart()
 {
+	// Depress the start button and hide the menu
 	$("#btn_start").css("background-image", "url(\"./res/start/start.png\")");
 	$("#menu_start").css("display", "none");
 
