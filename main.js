@@ -621,8 +621,10 @@ function loadProgram(name)
 			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
 			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
 
-			// Store window id in program div
-			$("#program" + pid).append('<div class="hidden info_wid">' + (id - 1) + '</div>');
+			// Add hidden info to program
+			var prog = $("#program" + pid);
+			prog.append('<div class="hidden info_wid">' + (id - 1) + '</div>');
+			prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
 
 			// Call initialization function
 			var func = "prg_" + tempJSON.name + "_init";
