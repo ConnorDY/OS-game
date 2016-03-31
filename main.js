@@ -21,6 +21,8 @@ var tempJSON = null;
 
 var resizePos = -1;
 
+var windowQueue = [];
+
 function init()
 {
 	// Disable normal right click
@@ -71,7 +73,7 @@ function init()
 	$(".menu_option").mouseout(dehighlightOption);
 
 	setInterval(updateTime, 60000);
-	setInterval(cycleStep, 50);
+	setInterval(cycleStep, 25);
 	setTimeout(fadeIn, 50);
 
 	// Default set up
@@ -82,6 +84,24 @@ function cycleStep()
 {
 	// Fix position of taskbar and desktop
 	$("body").scrollTop(0);
+
+	// Spawn new windows
+	if (windowQueue.length > 0)
+	{
+		var win = windowQueue.pop();
+		createWindow(win[0], win[1], win[2], win[3]);
+		var func = win[4];
+		func();
+	}
+
+	if (!resizingWindow)
+	{
+		// Check window titles
+		$(".window").each(function()
+		{
+			checkWindowTitle($(this).attr("id").substring(6));
+		});
+	}
 }
 
 function updateTime()
@@ -100,6 +120,11 @@ function updateTime()
 
 	var timeStr = hours + ":" + (minutes > 9 ? "" : "0") + minutes + " " + (am ? "AM" : "PM");
 	$("#time").html(timeStr);
+}
+
+function addWindow(title, width, height, x, y, success)
+{
+	windowQueue.push([title, width, height, x, y, success]);
 }
 
 function createWindow(title, width, height, x, y)
@@ -176,15 +201,16 @@ function createWindow(title, width, height, x, y)
 
 	var footerTitle = title;
 
-	// Short footer title if necessary
-	if (checkLength(footerTitle, 14) > 178)
+	// Shorten footer title if necessary
+	if (checkLength(footerTitle, 14) > 192)
 	{
-		var i = title.length - 2;
+		var i = title.length - 3;
 
 		while (i > 3)
 		{
 			footerTitle = title.substring(0, i) + "...";
-			if (checkLength(footerTitle, 14) < 178) break;
+			if (footerTitle.substring(footerTitle.length - 4, footerTitle.length - 3) == " ") {}
+			else if (checkLength(footerTitle, 14) <= 192) break;
 			i--;
 		}
 	}
@@ -192,9 +218,10 @@ function createWindow(title, width, height, x, y)
 	wint.children(".mid").append('<div class="title">' + footerTitle + '</div>');
 	wint.css("width", (checkLength(footerTitle, 14) + 16) + "px");
 
-	// Set hidden window info and then activate it
+	// Set hidden window info
 	win.append('<div class="hidden info_title">' + title + '</div>');
 
+	// Activate the window
 	activateWindow(id);
 
 	// Increase ID value
@@ -519,13 +546,14 @@ function checkWindowTitle(id_)
 	// Shorten the title if the window is too small to fit it
 	if (checkLength(title, 16) > w)
 	{
-		var i = title.length - 2;
+		var i = title.length - 3;
 		var newTitle = "";
 
 		while (i > 3)
 		{
 			newTitle = title.substring(0, i) + "...";
-			if (checkLength(newTitle, 16) < w) break;
+			if (newTitle.substring(newTitle.length - 4, newTitle.length - 3) == " ") {}
+			else if (checkLength(newTitle, 16) <= w) break;
 			i--;
 		}
 
@@ -612,26 +640,29 @@ function loadProgram(name)
 		var program = programs.children("#program" + pid);
 		$.getScript("./programs/" + data.name + "/code.js", function()
 		{
+			var success = function()
+			{
+				// Add hidden info to window
+				var win = $("#window" + (id - 1));
+				win.append('<div class="hidden info_pid">' + pid + '</div>');
+				win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
+				win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
+
+				// Add hidden info to program
+				var prog = $("#program" + pid);
+				prog.append('<div class="hidden info_wid">' + (id - 1) + '</div>');
+				prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
+
+				// Call initialization function
+				var func = "prg_" + tempJSON.name + "_init";
+				window[func](pid, id - 1);
+
+				// Increase PID value
+				pid++;
+			};
+
 			// Create window for this program
-			createWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
-
-			// Add hidden info to window
-			var win = $("#window" + (id - 1));
-			win.append('<div class="hidden info_pid">' + pid + '</div>');
-			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
-			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
-
-			// Add hidden info to program
-			var prog = $("#program" + pid);
-			prog.append('<div class="hidden info_wid">' + (id - 1) + '</div>');
-			prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
-
-			// Call initialization function
-			var func = "prg_" + tempJSON.name + "_init";
-			window[func](pid, id - 1);
-
-			// Increase PID value
-			pid++;
+			addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0, success);
 		});
 	});
 }

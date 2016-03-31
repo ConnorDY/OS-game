@@ -120,8 +120,10 @@ body
 
 .windowt>.mid>.title
 {
+	text-align: center;
+
 	position: relative;
-	left: 2px;
+	left: 0px;
 	top: 6px;
 
 	font-size: 14px;
