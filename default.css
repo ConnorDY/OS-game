@@ -391,6 +391,14 @@ body
 	background-image: url("./res/windows/btn_close.png");
 }
 
+.mid>.mid>.container
+{
+	width: 100%;
+	height: calc(100% - 20px);
+
+	color: #000000;
+}
+
 .window>.mid>.right
 {
 	position: absolute;

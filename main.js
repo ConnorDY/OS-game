@@ -1,5 +1,6 @@
-var id = 0;
-var pid = 0;
+var id = 0;		// window id
+var pid = 0;	// process id
+var lid = 0;	// loading id
 
 var hours = 3;
 var minutes = 21;
@@ -13,6 +14,7 @@ var activeWindow = 0;
 
 var startPressed = false;
 var resizingWindow = false;
+var loadingProgram = false;
 
 var temp_mx = 0;
 var temp_my = 0;
@@ -22,6 +24,7 @@ var tempJSON = null;
 var resizePos = -1;
 
 var windowQueue = [];
+var programQueue = [];
 
 function init()
 {
@@ -77,8 +80,8 @@ function init()
 	setTimeout(fadeIn, 50);
 
 	// Default set up
-	loadProgram("test_program");
-	loadProgram("explorer");
+	addProgram("test_program");
+	addProgram("explorer");
 }
 
 function cycleStep()
@@ -89,8 +92,41 @@ function cycleStep()
 	// Spawn new windows
 	if (windowQueue.length > 0)
 	{
-		var win = windowQueue.pop();
+		var win = windowQueue.shift();
 		createWindow(win[0], win[1], win[2], win[3]);
+
+		// Load code for program
+		$.getScript("./programs/" + tempJSON.name + "/code.js", function()
+		{
+			// Add hidden info to window
+			var win = $("#window" + (lid));
+			win.append('<div class="hidden info_pid">' + pid + '</div>');
+			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
+			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
+
+			// Add hidden info to program
+			var prog = $("#program" + pid);
+			prog.append('<div class="hidden info_wid">' + lid + '</div>');
+			prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
+
+			// Call initialization function
+			var func = "prg_" + tempJSON.name + "_init";
+			window[func](pid, lid);
+
+			// Increase PID and LID values
+			pid++;
+			lid++;
+
+			// Stop blocking program loading
+			loadingProgram = false;
+		});
+	}
+
+	// Load new programs
+	if (!loadingProgram && programQueue.length > 0)
+	{
+		var prog = programQueue.shift();
+		loadProgram(prog);
 	}
 
 	if (!resizingWindow)
@@ -174,6 +210,9 @@ function createWindow(title, width, height, x, y)
 		closeWindow(id_);
 	});
 
+	// Add container div
+	bmid.children(".mid").append('<div class="container"></div>');
+
 	// Make window resizable
 	btop.children().mousedown(resizeWindow);
 	bmid.children(".side_left").mousedown(resizeWindow);
@@ -215,7 +254,7 @@ function createWindow(title, width, height, x, y)
 	}
 
 	wint.children(".mid").append('<div class="title">' + footerTitle + '</div>');
-	wint.css("width", (checkLength(footerTitle, 14) + 16) + "px");
+	wint.css("width", (checkLength(footerTitle, 14) + 18) + "px");
 
 	// Set hidden window info
 	win.append('<div class="hidden info_title">' + title + '</div>');
@@ -561,12 +600,29 @@ function checkWindowTitle(id_)
 	else container.html(title);
 }
 
-function handleGenericClick(e)
+function addProgram(name)
 {
-	var target = $(e.target);
+	// Create program div
+	var programs = $("#programs");
+	programs.append('<div id="program' + pid + '"></div>');
 
-	// Close the start menu if clicking anywhere besides the start button
-	if (!target.is("#btn_start")) closeStart();
+	// Add to queue
+	programQueue.push(name);
+}
+
+function loadProgram(name)
+{
+	// Block program loading
+	loadingProgram = true;
+
+	// Get program info
+	$.getJSON("./programs/" + name + "/info.json", function(data)
+	{
+		tempJSON = data;
+
+		// Create window for this program
+		addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
+	});
 }
 
 function pressStart()
@@ -624,45 +680,12 @@ function dehighlightOption()
 	});
 }
 
-function loadProgram(name)
+function handleGenericClick(e)
 {
-	// Create program div
-	var programs = $("#programs");
-	programs.append('<div id="program' + pid + '"></div>');
+	var target = $(e.target);
 
-	// Get program info
-	$.getJSON("./programs/" + name + "/info.json", function(data)
-	{
-		tempJSON = data;
-
-		// Create window for this program
-		addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
-
-		// Load code for it
-		$.getScript("./programs/" + data.name + "/code.js", function()
-		{
-			setTimeout(function()
-			{
-				// Add hidden info to window
-				var win = $("#window" + (id - 1));
-				win.append('<div class="hidden info_pid">' + pid + '</div>');
-				win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
-				win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
-
-				// Add hidden info to program
-				var prog = $("#program" + pid);
-				prog.append('<div class="hidden info_wid">' + (id - 1) + '</div>');
-				prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
-
-				// Call initialization function
-				var func = "prg_" + tempJSON.name + "_init";
-				window[func](pid, id - 1);
-
-				// Increase PID value
-				pid++;
-			}, 25);
-		});
-	});
+	// Close the start menu if clicking anywhere besides the start button
+	if (!target.is("#btn_start")) closeStart();
 }
 
 function checkLength(txt, size)
