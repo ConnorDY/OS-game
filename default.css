@@ -170,6 +170,8 @@ body
 
 	width: 200px;
 	height: calc((4 * 38px) + 2px + 6px);
+
+	z-index: 10;
 }
 
 #menu_start>#top
