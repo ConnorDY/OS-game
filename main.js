@@ -620,8 +620,27 @@ function loadProgram(name)
 	{
 		tempJSON = data;
 
-		// Create window for this program
-		addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
+		if (!tempJSON.silent)
+		{
+			// Create window for this program
+			addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
+		}
+		else $.getScript("./programs/" + tempJSON.name + "/code.js", function()
+		{
+			// Add hidden info to program
+			var prog = $("#program" + pid);
+			prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
+
+			// Call initialization function
+			var func = "prg_" + tempJSON.name + "_init";
+			window[func](pid);
+
+			// Increase PID and LID values
+			pid++;
+
+			// Stop blocking program loading
+			loadingProgram = false;
+		});
 	});
 }
 

@@ -2,5 +2,7 @@
 	"name":			"explorer",
 	"title":		"Explorer",
 	"min_width":	250,
-	"min_height":	250
+	"min_height":	250,
+	"has_icon":		true,
+	"silent":		false
 }

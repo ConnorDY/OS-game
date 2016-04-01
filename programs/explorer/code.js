@@ -11,6 +11,4 @@ function prg_explorer_init(pid, wid)
 
 	prg_explorer_win = $("#window" + wid);
 	prg_explorer_container = prg_explorer_win.children(".mid").children(".mid").children(".container");
-
-	prg_explorer_container.html("This is a test.");
 }

@@ -2,5 +2,7 @@
 	"name":			"test_program",
 	"title":		"A Test Program",
 	"min_width":	300,
-	"min_height":	300
+	"min_height":	300,
+	"has_icon":		false,
+	"silent":		false
 }
