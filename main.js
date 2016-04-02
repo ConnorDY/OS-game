@@ -25,6 +25,7 @@ var resizePos = -1;
 
 var windowQueue = [];
 var programQueue = [];
+var programsLoaded = [];
 
 function init()
 {
@@ -95,28 +96,23 @@ function cycleStep()
 		var win = windowQueue.shift();
 		createWindow(win[0], win[1], win[2], win[3]);
 
-		// Load code for program
-		$.getScript("./programs/" + tempJSON.name + "/code.js", function()
+		// Add hidden info to window
+		win = $("#window" + (lid));
+		win.append('<div class="hidden info_pid">' + pid + '</div>');
+		win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
+		win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
+
+		// Add icon if it exists
+		if (tempJSON.has_icon)
 		{
-			// Add hidden info to window
-			var win = $("#window" + (lid));
-			win.append('<div class="hidden info_pid">' + pid + '</div>');
-			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
-			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
+			win.children(".mid").children(".mid").children(".bar").prepend(
+				'<div class="icon"><img src="./programs/' + tempJSON.name + '/icon.png" /></div>'
+			);
+		}
 
-			// Add icon if it exists
-			if (tempJSON.has_icon)
-			{
-				win.children(".mid").children(".mid").children(".bar").prepend(
-					'<div class="icon"><img src="./programs/' + tempJSON.name + '/icon.png" /></div>'
-				);
-			}
-
-			// Add hidden info to program
-			var prog = $("#program" + pid);
-			prog.append('<div class="hidden info_wid">' + lid + '</div>');
-			prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
-
+		// Load code for program
+		if (programsLoaded.indexOf(tempJSON.name) == -1) $.getScript("./programs/" + tempJSON.name + "/code.js", function()
+		{
 			// Call initialization function
 			var func = "prg_" + tempJSON.name + "_init";
 			window[func](pid, lid);
@@ -127,7 +123,23 @@ function cycleStep()
 
 			// Stop blocking program loading
 			loadingProgram = false;
+
+			// Add program to programsLoaded array
+			programsLoaded.push(tempJSON.name);
 		});
+		else
+		{
+			// Call initialization function
+			var func = "prg_" + tempJSON.name + "_init";
+			window[func](pid, lid);
+
+			// Increase PID and LID values
+			pid++;
+			lid++;
+
+			// Stop blocking program loading
+			loadingProgram = false;
+		}
 	}
 
 	// Load new programs
@@ -629,7 +641,7 @@ function loadProgram(name)
 		tempJSON = data;
 
 		// Load CSS for program
-		if (tempJSON.has_css)
+		if (tempJSON.has_css && programsLoaded.indexOf(tempJSON.name) == -1)
 		{
 			$("<link/>", {
 				rel:	"stylesheet",
@@ -643,22 +655,41 @@ function loadProgram(name)
 			// Create window for this program
 			addWindow(tempJSON.title, tempJSON.min_width, tempJSON.min_height, 0, 0);
 		}
-		else $.getScript("./programs/" + tempJSON.name + "/code.js", function()
+		else
 		{
 			// Add hidden info to program
 			var prog = $("#program" + pid);
+			prog.append('<div class="hidden info_wid">' + lid + '</div>');
 			prog.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
 
-			// Call initialization function
-			var func = "prg_" + tempJSON.name + "_init";
-			window[func](pid);
+			if (programsLoaded.indexOf(tempJSON.name) == -1) $.getScript("./programs/" + tempJSON.name + "/code.js", function()
+			{
+				// Call initialization function
+				var func = "prg_" + tempJSON.name + "_init";
+				window[func](pid);
 
-			// Increase PID and LID values
-			pid++;
+				// Increase PID and LID values
+				pid++;
 
-			// Stop blocking program loading
-			loadingProgram = false;
-		});
+				// Stop blocking program loading
+				loadingProgram = false;
+
+				// Add program to programsLoaded array
+				programsLoaded.push(tempJSON.name);
+			});
+			else
+			{
+				// Call initialization function
+				var func = "prg_" + tempJSON.name + "_init";
+				window[func](pid);
+
+				// Increase PID and LID values
+				pid++;
+
+				// Stop blocking program loading
+				loadingProgram = false;
+			}
+		}
 	});
 }
 

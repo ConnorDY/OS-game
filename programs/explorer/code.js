@@ -24,6 +24,9 @@ function prg_explorer_init(pid, wid)
 	// Add menu items
 	var menus = filebar.children(".menus");
 	menus.append('<div class="menu_entry"><div class="text">File</div></div>');
+	menus.append('<div class="menu_entry"><div class="text">Edit</div></div>');
+	menus.append('<div class="menu_entry"><div class="text">View</div></div>');
+	menus.append('<div class="menu_entry"><div class="text">Help</div></div>');
 
 	// Add container divs
 	container.append('<div class="mid prg_explorer"></div>');
