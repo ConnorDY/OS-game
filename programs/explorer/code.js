@@ -21,6 +21,11 @@ function prg_explorer_init(pid, wid)
 	filebar.append('<div class="menus"></div>');
 	filebar.append('<div class="footer"><div class="left corner"></div><div class="right corner"></div></div>');
 
+	// Add menu items
+	var menus = filebar.children(".menus");
+	menus.append('<div class="menu_entry"><div class="text">File</div></div>');
+
+	// Add container divs
 	container.append('<div class="mid prg_explorer"></div>');
 
 	var mid = container.children(".mid");
