@@ -104,6 +104,14 @@ function cycleStep()
 			win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
 			win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
 
+			// Add icon if it exists
+			if (tempJSON.has_icon)
+			{
+				win.children(".mid").children(".mid").children(".bar").prepend(
+					'<div class="icon"><img src="./programs/' + tempJSON.name + '/icon.png" /></div>'
+				);
+			}
+
 			// Add hidden info to program
 			var prog = $("#program" + pid);
 			prog.append('<div class="hidden info_wid">' + lid + '</div>');

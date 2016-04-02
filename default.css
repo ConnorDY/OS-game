@@ -381,6 +381,18 @@ body
 	font-size: 16px;
 }
 
+.mid>.bar>.icon
+{
+	float: left;
+
+	position: relative;
+	top: 2px;
+	left: 2px;
+
+	width: 16px;
+	height: 16px;
+}
+
 .mid>.bar>.btn_close
 {
 	position: absolute;
