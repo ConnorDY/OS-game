@@ -291,6 +291,28 @@ function activateWindow(id_)
 	var win = $("#window" + id_);
 	var wint = $("#windowt" + id_);
 
+	// Deactivate other windows
+	deactivateAllWindows();
+
+	// Set current to active
+	wint.children(".left").css("background-image", "url('./res/taskbar/window_left_s.png')");
+	wint.children(".mid").css("background-image", "url('./res/taskbar/window_mid_s.png')");
+	wint.children(".right").css("background-image", "url('./res/taskbar/window_right_s.png')");
+
+	wint.children(".mid").children(".title").css("top", "7px");
+
+	win.css("z-index", 1);
+
+	win.children(".mid").children(".mid").children(".bar").css({
+		"background-color":	"#000080",
+		"color":			"#FFFFFF"
+	});
+
+	activeWindow = id_;
+}
+
+function deactivateAllWindows()
+{
 	// Reset other windows
 	$(".windowt").each(function()
 	{
@@ -311,21 +333,7 @@ function activateWindow(id_)
 		});
 	});
 
-	// Set current to active
-	wint.children(".left").css("background-image", "url('./res/taskbar/window_left_s.png')");
-	wint.children(".mid").css("background-image", "url('./res/taskbar/window_mid_s.png')");
-	wint.children(".right").css("background-image", "url('./res/taskbar/window_right_s.png')");
-
-	wint.children(".mid").children(".title").css("top", "7px");
-
-	win.css("z-index", 1);
-
-	win.children(".mid").children(".mid").children(".bar").css({
-		"background-color":	"#000080",
-		"color":			"#FFFFFF"
-	});
-
-	activeWindow = id_;
+	activeWindow = -1;
 }
 
 function closeWindow(id_)
@@ -707,6 +715,9 @@ function openStart()
 	// Get start button and menu
 	var btn = $("#btn_start");
 	var menu = $("#menu_start");
+
+	// Deactivate windows
+	deactivateAllWindows();
 
 	// Change the button to pressed
 	btn.css("background-image", "url(\"./res/start/start_pressed.png\")");
