@@ -19,13 +19,12 @@ function prg_explorer_init(pid, wid)
 
 	var filebar = container.children(".filebar");
 	filebar.append('<div class="menus"></div>');
-	filebar.append('<div class="footer"></div>');
+	filebar.append('<div class="footer"><div class="left corner"></div><div class="right corner"></div></div>');
 
-	// Add inside containers
 	container.append('<div class="mid prg_explorer"></div>');
 
 	var mid = container.children(".mid");
 	mid.append('<div class="left"></div><div class="mid"></div><div class="right"></div>');
 
-	container.append('<div class="bot prg_explorer"></div>');
+	container.append('<div class="bot prg_explorer"><div class="left corner"></div><div class="right corner"></div></div>');
 }
