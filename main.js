@@ -628,6 +628,16 @@ function loadProgram(name)
 	{
 		tempJSON = data;
 
+		// Load CSS for program
+		if (tempJSON.has_css)
+		{
+			$("<link/>", {
+				rel:	"stylesheet",
+				type:	"text/css",
+				href:	"./programs/" + tempJSON.name + "/style.css"
+			}).appendTo("head");
+		}
+
 		if (!tempJSON.silent)
 		{
 			// Create window for this program
