@@ -105,6 +105,7 @@ function prg_explorer_loadPath(path)
 
 								var type = "file";
 								if (ext === "txt") type = "txt";
+								else if (ext === "jpg" || ext === "jpeg" || ext === "png" || ext === "gif" || ext === "bmp") type = "img";
 								
 								prg_explorer_addIcon(prg_explorer_curPath + val, type, val);
 							}
@@ -122,7 +123,12 @@ function prg_explorer_loadPath(path)
 					var type = "file";
 					if (ext === "txt")
 					{
+						if (!windowExists("notepad")) addProgram("notepad");
 
+						setTimeout(function()
+						{
+							prg_notepad_loadTxt(prg_explorer_tempPath.substring(3));
+						}, 222);
 					}
 					else if (ext === "jpg" || ext === "jpeg" || ext === "png" || ext === "gif" || ext === "bmp")
 					{

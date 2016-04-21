@@ -1,0 +1,9 @@
+{
+	"name":			"notepad",
+	"title":		"Notepad",
+	"min_width":	275,
+	"min_height":	250,
+	"has_icon":		false,
+	"has_css":		true,
+	"silent":		false
+}

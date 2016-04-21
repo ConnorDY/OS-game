@@ -230,6 +230,11 @@
 	background-image: url("res/icon_floppy.png");
 }
 
+.icon>.icon.img
+{
+	background-image: url("res/icon_img.png");
+}
+
 .icon>.icon.txt
 {
 	background-image: url("res/icon_txt.png");
