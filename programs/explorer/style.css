@@ -96,6 +96,9 @@
 
 	width: calc(100% - 2px);
 	height: 100%;
+
+	box-sizing: border-box;
+	padding: 4px 4px 0px 4px;
 }
 
 .prg_explorer.mid>.right
@@ -129,4 +132,58 @@
 	background-color: #7F787F;
 
 	z-index: 3;
+}
+
+.prg_explorer.mid>.mid>.icon
+{
+	width: 72px;
+	height: 51px;
+
+	float: left;
+	padding: 0px 0px 4px 0px;
+}
+
+.prg_explorer.mid>.mid>.icon>.icon
+{
+	margin: auto;
+
+	width: 42px;
+	height: 35px;
+}
+
+.prg_explorer.mid>.mid>.icon>.label
+{
+	position: relative;
+	top: 4px;
+
+	width: 100%;
+	height: 12px;
+
+	text-align: center;
+	font-size: 11px;
+}
+
+.icon>.icon.ctrlpanel
+{
+	background-image: url("res/icon_ctrlpanel.png");
+}
+
+.icon>.icon.directory
+{
+	background-image: url("res/icon_directory.png");
+}
+
+.icon>.icon.disc
+{
+	background-image: url("res/icon_disc.png");
+}
+
+.icon>.icon.disk
+{
+	background-image: url("res/icon_disk.png");
+}
+
+.icon>.icon.floppy
+{
+	background-image: url("res/icon_floppy.png");
 }

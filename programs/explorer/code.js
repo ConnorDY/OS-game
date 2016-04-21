@@ -4,6 +4,9 @@ var prg_explorer_wid = null;
 var prg_explorer_win = null;
 var prg_explorer_container = null;
 
+var prg_explorer_div = null;
+var prg_explorer_icon_id = 0;
+
 function prg_explorer_init(pid, wid)
 {
 	// Store info
@@ -13,26 +16,73 @@ function prg_explorer_init(pid, wid)
 	prg_explorer_win = $("#window" + wid);
 	prg_explorer_container = prg_explorer_win.children(".mid").children(".mid").children(".container");
 
-	// Add filebar
-	var container = prg_explorer_container;
-	container.append('<div class="filebar prg_explorer"></div>');
+	// Load Window HTML
+	$.get("./programs/explorer/window.html", function(response)
+	{
+		prg_explorer_container.html(response);
 
-	var filebar = container.children(".filebar");
-	filebar.append('<div class="menus"></div>');
-	filebar.append('<div class="footer"><div class="left corner"></div><div class="right corner"></div></div>');
+		prg_explorer_div = prg_explorer_container.children(".mid").children(".mid");
 
-	// Add menu items
-	var menus = filebar.children(".menus");
-	menus.append('<div class="menu_entry"><div class="text">File</div></div>');
-	menus.append('<div class="menu_entry"><div class="text">Edit</div></div>');
-	menus.append('<div class="menu_entry"><div class="text">View</div></div>');
-	menus.append('<div class="menu_entry"><div class="text">Help</div></div>');
+		prg_explorer_loadPath("/");
+	});
+}
 
-	// Add container divs
-	container.append('<div class="mid prg_explorer"></div>');
+function prg_explorer_changeTitle(path)
+{
+	var title = path;
+	if (path === "/") title = "My Computer";
 
-	var mid = container.children(".mid");
-	mid.append('<div class="left"></div><div class="mid"></div><div class="right"></div>');
+	setWindowTitle(prg_explorer_wid, title);
+}
 
-	container.append('<div class="bot prg_explorer"><div class="left corner"></div><div class="right corner"></div></div>');
+function prg_explorer_loadPath(path)
+{
+	if (path === "/")
+	{
+		prg_explorer_div.empty();
+		prg_explorer_changeTitle(path);
+
+		prg_explorer_addIcon("A:", "floppy", "3½ Floppy (A:)");
+		prg_explorer_addIcon("E:", "disc", "(E:)");
+		prg_explorer_addIcon("C:", "disk", "(C:)");
+		prg_explorer_addIcon("/ctrl", "ctrlpanel", "Control Panel");
+	}
+	else if (path === "A:")
+	{
+
+	}
+	else if (path === "E:")
+	{
+
+	}
+	else if (path === "/ctrl")
+	{
+
+	}
+	else
+	{
+		if (path.substring(0, 2) === "C:")
+		{
+			var directPath = path.substring(2);
+			if (directPath === "/") directPath = "";
+
+			
+		}
+	}
+}
+
+function prg_explorer_addIcon(path, type, label)
+{
+	prg_explorer_div.append(
+		'<div id="prg_explorer_icon' + prg_explorer_icon_id + '" class="icon"><div class="icon ' + type + '"></div><div class="label">' + label + '</div></div>'
+	);
+
+	var icon = prg_explorer_div.children("#prg_explorer_icon" + prg_explorer_icon_id);
+	
+	icon.click(function()
+	{
+		prg_explorer_loadPath(path);
+	});
+
+	prg_explorer_icon_id++;
 }

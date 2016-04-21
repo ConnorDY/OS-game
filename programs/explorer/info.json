@@ -1,7 +1,7 @@
 {
 	"name":			"explorer",
 	"title":		"Explorer",
-	"min_width":	250,
+	"min_width":	234,
 	"min_height":	250,
 	"has_icon":		true,
 	"has_css":		true,

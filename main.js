@@ -628,6 +628,13 @@ function checkWindowTitle(id_)
 	else container.html(title);
 }
 
+function setWindowTitle(wid_, newTitle)
+{
+	var w = $("#window" + wid_);
+	w.children(".info_title").html(newTitle);
+	w.children(".mid").children(".mid").children(".bar").children(".title").html(newTitle);
+}
+
 function addProgram(name)
 {
 	// Create program div
