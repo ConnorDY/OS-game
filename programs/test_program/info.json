@@ -1,9 +1,0 @@
-{
-	"name":			"test_program",
-	"title":		"A Test Program",
-	"min_width":	180,
-	"min_height":	60,
-	"has_icon":		false,
-	"has_css":		false,
-	"silent":		false
-}

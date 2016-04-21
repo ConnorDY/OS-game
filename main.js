@@ -84,7 +84,7 @@ function init()
 	setTimeout(fadeIn, 50);
 
 	// Default set up
-	//addProgram("explorer");
+	addProgram("demo");
 }
 
 function cycleStep()

@@ -1,0 +1,9 @@
+{
+	"name":			"demo",
+	"title":		"Windows 95 Browser Demo",
+	"min_width":	250,
+	"min_height":	220,
+	"has_icon":		false,
+	"has_css":		false,
+	"silent":		false
+}
