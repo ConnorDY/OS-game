@@ -17,6 +17,7 @@ var resizingWindow = false;
 var loadingProgram = false;
 
 var tempRet = false;
+var tempVar = null;
 
 var temp_mx = 0;
 var temp_my = 0;
@@ -83,7 +84,7 @@ function init()
 	setTimeout(fadeIn, 50);
 
 	// Default set up
-	addProgram("explorer");
+	//addProgram("explorer");
 }
 
 function cycleStep()
@@ -102,6 +103,7 @@ function cycleStep()
 		win.append('<div class="hidden info_pid">' + pid + '</div>');
 		win.append('<div class="hidden info_minwidth">' + tempJSON.min_width + '</div>');
 		win.append('<div class="hidden info_minheight">' + tempJSON.min_height + '</div>');
+		win.append('<div class="hidden info_name">' + tempJSON.name + '</div>');
 
 		// Add icon if it exists
 		if (tempJSON.has_icon)
@@ -636,13 +638,14 @@ function setWindowTitle(wid_, newTitle)
 	w.children(".mid").children(".mid").children(".bar").children(".title").html(newTitle);
 }
 
-function windowExists(title)
+function windowExists(name)
 {
 	tempRet = false;
+	tempVar = name;
 
 	$("#desktop").children(".window").each(function()
 	{
-		if ($(this).children(".info_title").html() === title) tempRet = true;
+		if ($(this).children(".info_name").html() === tempVar) tempRet = true;
 	});
 
 	return tempRet;
@@ -761,6 +764,12 @@ function closeStart()
 	$("#menu_start").css("display", "none");
 
 	startPressed = false;
+}
+
+function clickedDocuments()
+{
+	if (!windowExists("explorer")) addProgram("explorer");
+	else prg_explorer_loadPath("C:/Documents/");
 }
 
 function highlightOption()

@@ -27,7 +27,7 @@ function prg_explorer_init(pid, wid)
 
 		prg_explorer_div = prg_explorer_container.children(".mid").children(".mid");
 
-		prg_explorer_loadPath("/");
+		prg_explorer_loadPath("C:/Documents/");
 	});
 }
 
@@ -126,7 +126,7 @@ function prg_explorer_loadPath(path)
 					}
 					else if (ext === "jpg" || ext === "jpeg" || ext === "png" || ext === "gif" || ext === "bmp")
 					{
-						if (!windowExists("Photo Viewer")) addProgram("photoview");
+						if (!windowExists("photoview")) addProgram("photoview");
 
 						setTimeout(function()
 						{
