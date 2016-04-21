@@ -124,6 +124,15 @@ function prg_explorer_loadPath(path)
 					{
 
 					}
+					else if (ext === "jpg" || ext === "jpeg" || ext === "png" || ext === "gif" || ext === "bmp")
+					{
+						if (!windowExists("Photo Viewer")) addProgram("photoview");
+
+						setTimeout(function()
+						{
+							prg_photoview_loadPhoto(prg_explorer_tempPath.substring(3));
+						}, 222);
+					}
 				}
 			});
 		}

@@ -1,0 +1,9 @@
+{
+	"name":			"photoview",
+	"title":		"Photo Viewer",
+	"min_width":	250,
+	"min_height":	250,
+	"has_icon":		false,
+	"has_css":		true,
+	"silent":		false
+}

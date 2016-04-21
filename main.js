@@ -16,6 +16,8 @@ var startPressed = false;
 var resizingWindow = false;
 var loadingProgram = false;
 
+var tempRet = false;
+
 var temp_mx = 0;
 var temp_my = 0;
 
@@ -632,6 +634,18 @@ function setWindowTitle(wid_, newTitle)
 	var w = $("#window" + wid_);
 	w.children(".info_title").html(newTitle);
 	w.children(".mid").children(".mid").children(".bar").children(".title").html(newTitle);
+}
+
+function windowExists(title)
+{
+	tempRet = false;
+
+	$("#desktop").children(".window").each(function()
+	{
+		if ($(this).children(".info_title").html() === title) tempRet = true;
+	});
+
+	return tempRet;
 }
 
 function addProgram(name)

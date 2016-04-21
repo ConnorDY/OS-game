@@ -1,0 +1,118 @@
+.prg_photoview.top
+{
+	position: relative;
+	left: -1px;
+
+	width: calc(100% + 1px);
+	height: 2px;
+
+	background-image: url("res/in_top.png");
+
+	background-color: #C0C0C0;
+}
+
+.prg_photoview.mid
+{
+	position: relative;
+	left: -1px;
+
+	width: calc(100% + 1px);
+	height: 100%;
+
+	background-color: #FFFFFF;
+}
+
+.prg_photoview>.left, .prg_photoview>.footer>.left
+{
+	position: absolute;
+	left: 0px;
+}
+
+.prg_photoview>.right, .prg_photoview>.footer>.right
+{
+	position: absolute;
+	right: 0px;
+}
+
+.prg_photoview.mid>.left
+{
+	width: 2px;
+	height: 100%;
+
+	background-image: url("res/in_left.png");
+
+	z-index: 2;
+}
+
+.prg_photoview.mid>.mid
+{
+	position: absolute;
+	left: 2px;
+
+	width: calc(100% - 2px);
+	height: 100%;
+
+	display: table;
+}
+
+.prg_photoview.mid>.right
+{
+	width: 2px;
+	height: 100%;
+
+	background-image: url("res/in_right.png");
+
+	z-index: 2;
+}
+
+.prg_photoview.bot
+{
+	position: relative;
+	left: -1px;
+
+	width: calc(100% + 1px);
+	height: 2px;
+
+	background-image: url("res/in_bot.png");
+
+	z-index: 2;
+}
+
+.prg_photoview.bot>.corner, .prg_photoview.top>.corner
+{
+	width: 1px;
+	height: 2px;
+
+	background-color: #7F787F;
+
+	z-index: 3;
+}
+
+.prg_photoview.padding
+{
+	width: 100%;
+	height: 1px;
+}
+
+.prg_photoview.mid>.mid>.wrap
+{
+	position: relative;
+	left: -1px;
+
+	height: 100%;
+}
+
+.prg_photoview.mid>.mid>.wrap>#img
+{
+	position: absolute;
+	
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+
+	max-width: 100%;
+	max-height: 100%;
+
+	margin: auto;
+}
