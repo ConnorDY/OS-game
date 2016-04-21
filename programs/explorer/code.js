@@ -51,7 +51,7 @@ function prg_explorer_loadPath(path)
 		// Add "My Computer" icons
 		prg_explorer_addIcon("A:", "floppy", "3½ Floppy (A:)");
 		prg_explorer_addIcon("E:", "disc", "(E:)");
-		prg_explorer_addIcon("C:/", "disk", "(C:)");
+		prg_explorer_addIcon("C:", "disk", "(C:)");
 		prg_explorer_addIcon("/ctrl", "ctrlpanel", "Control Panel");
 	}
 	else if (path === "A:")
@@ -81,13 +81,14 @@ function prg_explorer_loadPath(path)
 					prg_explorer_curPath = prg_explorer_tempPath;
 					var directPath = prg_explorer_curPath.substring(2);
 
+					// Remove trailing forward slash if necessary
+					if (prg_explorer_curPath.charAt(prg_explorer_curPath.length - 1) != '/')
+						prg_explorer_curPath += '/';
+
 					// Reset the window and change the title
 					prg_explorer_div.empty();
 					prg_explorer_changeTitle(prg_explorer_curPath);
 					prg_explorer_icon_id = 0;
-
-					if (prg_explorer_curPath.charAt(prg_explorer_curPath.length - 1) != '/')
-						prg_explorer_curPath += '/';
 
 					// Get contents of directory
 					$.get("checkDirectory.php?path=" + directPath, function(data)
@@ -96,21 +97,61 @@ function prg_explorer_loadPath(path)
 
 						$.each(paths, function(index, val)
 						{
-							if (val.charAt(0) == '?')
-								prg_explorer_addIcon(prg_explorer_curPath + val.substring(1), "directory", val.substring(1));
+							if (val.charAt(0) == '?') prg_explorer_addIcon(prg_explorer_curPath + val.substring(1), "directory", val.substring(1));
 							else if (val.trim() !== "")
-								prg_explorer_addIcon(prg_explorer_curPath + val, "file", val);
+							{
+								// Get extension
+								var ext = val.replace(/^.*\./, '');
+
+								var type = "file";
+								if (ext === "txt") type = "txt";
+								
+								prg_explorer_addIcon(prg_explorer_curPath + val, type, val);
+							}
 						});
 					});
 				}
 				// Handle file loading
 				else
 				{
+					var path = prg_explorer_tempPath;
 
+					// Get extension
+					var ext = path.replace(/^.*\./, '');
+
+					var type = "file";
+					if (ext === "txt")
+					{
+
+					}
 				}
 			});
 		}
 	}
+}
+
+function prg_explorer_goUpDirectory()
+{
+	var newPath = prg_explorer_curPath;
+
+	if (newPath === "C:/") newPath = "/";
+	else
+	{
+		if (newPath.charAt(newPath.length - 1) == '/')
+			newPath = newPath.substring(0, newPath.length - 1);
+
+		newPath = newPath.substring(0, newPath.lastIndexOf('/') + 1);
+	}
+
+	prg_explorer_loadPath(newPath);
+
+	// Close dropdown menus
+	$(".filebar").children(".menus").children(".menu_entry").each(function()
+	{
+		$(this).removeClass("active");
+
+		$(this).children(".dropdown").css("display", "none");
+	});
 }
 
 function prg_explorer_addIcon(path, type, label)
@@ -121,12 +162,12 @@ function prg_explorer_addIcon(path, type, label)
 
 	var icon = prg_explorer_div.children("#prg_explorer_icon" + prg_explorer_icon_id);
 	
-
 	icon.click(function()
 	{
-		$(".prg_explorer.mid").children(".mid").children(".icon").css("border-color", "rgba(0, 0, 0, 0)");
-
-		$(this).css("border-color", "gray");
+		setTimeout(function(elem)
+		{
+			elem.css("border-color", "rgba(0, 0, 0, .5)");
+		}, 10, $(this));
 	});
 
 	icon.dblclick(function()
@@ -135,4 +176,13 @@ function prg_explorer_addIcon(path, type, label)
 	});
 
 	prg_explorer_icon_id++;
+}
+
+function prg_explorer_clickMenuItem(menu)
+{
+	var menu_div = prg_explorer_container.children(".filebar").children(".menus").children("#menu_" + menu);
+
+	menu_div.addClass("active");
+
+	menu_div.children(".dropdown").css("display", "block");
 }

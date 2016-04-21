@@ -31,7 +31,7 @@
 	background-color: #C0C0C0;
 }
 
-.prg_explorer>.menus>.menu_entry:hover, .prg_explorer>.menus>.menu_entry.active
+.prg_explorer>.menus>.menu_entry:hover, .prg_explorer>.menus>.menu_entry.active, .prg_explorer>.menus>.menu_entry>.dropdown>.dropdown_entry:hover
 {
 	color: #FFFFFF;
 	background-color: #0000BF;
@@ -42,6 +42,37 @@
 	position: relative;
 
 	text-align: center;
+}
+
+.prg_explorer>.menus>.menu_entry>.dropdown
+{
+	display: none;
+	width: 96px;
+
+	position: relative;
+	left: 1px;
+	top: 4px;
+
+	background-color: #C0C0C0;
+
+	z-index: 10;
+}
+
+.prg_explorer>.menus>.menu_entry>.dropdown>.dropdown_entry
+{
+	width: 100%;
+	height: 16px;
+
+	font-size: 13px;
+	color: #000000;
+
+	background-color: #C0C0C0;
+}
+
+.prg_explorer>.menus>.menu_entry>.dropdown>.dropdown_entry>.text
+{
+	position: relative;
+	left: 2px;
 }
 
 .prg_explorer.filebar>.footer
@@ -197,4 +228,9 @@
 .icon>.icon.floppy
 {
 	background-image: url("res/icon_floppy.png");
+}
+
+.icon>.icon.txt
+{
+	background-image: url("res/icon_txt.png");
 }

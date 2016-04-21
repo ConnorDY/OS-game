@@ -1,6 +1,13 @@
 <div class="filebar prg_explorer">
 	<div class="menus">
-		<div class="menu_entry"><div class="text">File</div></div>
+		<div class="menu_entry" id="menu_file" onclick="setTimeout(prg_explorer_clickMenuItem, 10, 'file')">
+			<div class="text">File</div>
+			<div class="dropdown">
+				<div class="dropdown_entry" onclick="setTimeout(prg_explorer_goUpDirectory, 12)">
+					<div class="text">Go up a folder</div>
+				</div>
+			</div>
+		</div>
 		<div class="menu_entry"><div class="text">Edit</div></div>
 		<div class="menu_entry"><div class="text">View</div></div>
 		<div class="menu_entry"><div class="text">Help</div></div>

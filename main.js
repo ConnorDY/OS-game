@@ -81,7 +81,6 @@ function init()
 	setTimeout(fadeIn, 50);
 
 	// Default set up
-	addProgram("test_program");
 	addProgram("explorer");
 }
 
@@ -772,6 +771,17 @@ function handleGenericClick(e)
 
 	// Close the start menu if clicking anywhere besides the start button
 	if (!target.is("#btn_start")) closeStart();
+
+	// Deselect icons
+	$(".prg_explorer.mid").children(".mid").children(".icon").css("border-color", "rgba(0, 0, 0, 0)");
+
+	// Close dropdown menus
+	$(".filebar").children(".menus").children(".menu_entry").each(function()
+	{
+		$(this).removeClass("active");
+
+		$(this).children(".dropdown").css("display", "none");
+	});
 }
 
 function checkLength(txt, size)
