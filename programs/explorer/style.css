@@ -136,11 +136,17 @@
 
 .prg_explorer.mid>.mid>.icon
 {
-	width: 72px;
-	height: 51px;
+	width: 74px;
+	height: 53px;
 
 	float: left;
 	padding: 0px 0px 4px 0px;
+
+	box-sizing: border-box;
+
+	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0);
+	border-style: dotted;
 }
 
 .prg_explorer.mid>.mid>.icon>.icon
@@ -181,6 +187,11 @@
 .icon>.icon.disk
 {
 	background-image: url("res/icon_disk.png");
+}
+
+.icon>.icon.file
+{
+	background-image: url("res/icon_file.png");
 }
 
 .icon>.icon.floppy
